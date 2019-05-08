@@ -22,7 +22,7 @@ const Card = props => {
 
     return(
         <TouchableOpacity
-            style = {[style, {...styles.card, backgroundColor: amount.color}]}
+            style = {[style, {...styles.card, backgroundColor: account.color}]}
             onPress = {onPress}
         >
             <Text style = {styles.accountName}>{account.name}</Text>

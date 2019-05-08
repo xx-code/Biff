@@ -11,32 +11,34 @@ import { records, stat } from '../../temp/fakeData';
 import StatResume from './components/StatResume';
 import DataBase from '../../data/dataBase';
 import ModalAddAccount from './components/ModalAddAccount';
+import Account from '../../data/model/account';
 import styles from './styles';
 
 class Home extends Component{
 
     state = {
         accounts: [],
-        showModalAdd: false
+        showModalAdd: false,
+        db : new DataBase()
     }
 
     componentDidMount(){
         SplashScreen.hide();
-
-        this.db = new DataBase();
+        this.fetchAllAccount()
     }
 
     fetchAllAccount = async () => {
-        this.db.getAccounts().then(res => {
+        this.state.db.getAccounts().then(res => {
             let array = res;
 
             if (res.length > 0) 
-                array.push({
-                    key: 'all',
-                    name: 'Tous',
-                    color: '#3D3D3D'
-                })
-
+                array.push(new Account(
+                    'all',
+                    'Tous',
+                    '#3D3D3D')
+                )
+            
+            console.log(array)
             this.setState({accounts: array})
         })
     }
@@ -56,9 +58,10 @@ class Home extends Component{
         }
 
         if (okSave) {
-            this.db.setAccount({name: name, color: color}).then(res => {
+            this.state.db.setAccount({name: name, color: color}).then(res => {
                 if (res) 
                 { 
+                    this.setState({showModalAdd: false})
                     ToastAndroid.show("Données enregistrement", ToastAndroid.SHORT);
                     this.fetchAllAccount();
                 } else {

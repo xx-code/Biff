@@ -4,7 +4,7 @@ export default class Record {
     constructor(id, accountId, amount, description, 
                 date, time, category, transfert ) {
 
-        this.id = id;
+        this.key = id;
         this.accountId = accountId;
         this.amount = amount;
         this.description = description;

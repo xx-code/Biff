@@ -2,7 +2,7 @@
 export default class Account {
 
     constructor(id, name, color){
-        this.id = id;
+        this.key = id;
         this.name = name;
         this.amount = 0;
         this.color = color;

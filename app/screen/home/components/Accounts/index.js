@@ -5,6 +5,7 @@ import { View,
          ScrollView } from 'react-native';
 import Card from './card';
 import styles from './styles';
+import { HideView } from '../../../../components/view'
 import { AddButton } from '../../../../components/button';
 
 /**
@@ -30,18 +31,24 @@ const Accounts = props => {
                 <FlatList
                     data = {data}
                     horizontal = {true}
-                    renderItem = {({item}) => <Card
-                                                onPress= {onClickAccount}
-                                                account = {item}
-                                                devise = {devise}
-                                            /> 
+                    renderItem = {({item}) =>{
+                        console.log(item)
+                        return <Card
+                                    onPress= {onClickAccount}
+                                    account = {item}
+                                    devise = {devise}
+                                />
+                    }  
                                 }
                     showsHorizontalScrollIndicator = {false} 
                 />
-                <AddButton
-                    style = {styles.addButton} 
-                    onPress = {addAccount}
-                />
+                <HideView hide = {data.length > 0 ? true : false}>
+                    <AddButton
+                        style = {styles.addButton} 
+                        onPress = {addAccount}
+                    />
+                </HideView>
+
             </ScrollView>
             
         </View>
