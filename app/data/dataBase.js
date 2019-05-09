@@ -36,7 +36,6 @@ export default class DataBase {
                 this.db.transaction(txn => {
                     txn.executeSql('Select id, name, color from Accounts', [], (tx, res) => {
                         const result = [];
-                        console.log(res.rows)
                         if (res.rows.length > 0) {
                             for (let i = 0; i < res.rows.length; i++) {
                                 let account = new Account(
@@ -44,7 +43,6 @@ export default class DataBase {
                                     res.rows.item(i).name.toString(),
                                     res.rows.item(i).color.toString(),
                                 )
-                                console.log(res.rows.item(i))
                                 tx.executeSql('Select id, accountId, description, date, time, category, transfert from Records', [], (tx, res) => {
                                     if (res.row.length > 0) {
                                         for (let i = 0; i < res.rows.length; i++) { 
@@ -66,7 +64,6 @@ export default class DataBase {
                                 result.push(account)
                             }
                         }
-                        console.log(result)
                         resolve(result)
                     }, err => resolve([]))
 

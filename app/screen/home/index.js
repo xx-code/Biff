@@ -19,6 +19,7 @@ class Home extends Component{
     state = {
         accounts: [],
         showModalAdd: false,
+        loadingAccountsHide: true,
         db : new DataBase()
     }
 
@@ -28,6 +29,7 @@ class Home extends Component{
     }
 
     fetchAllAccount = async () => {
+        this.setState({loadingAccountsHide: false})
         this.state.db.getAccounts().then(res => {
             let array = res;
 
@@ -38,8 +40,7 @@ class Home extends Component{
                     '#3D3D3D')
                 )
             
-            console.log(array)
-            this.setState({accounts: array})
+            this.setState({accounts: array, loadingAccountsHide: true})
         })
     }
 
@@ -77,7 +78,8 @@ class Home extends Component{
 
         const { navigation } = this.props;
         const { accounts, 
-                showModalAdd } = this.state;
+                showModalAdd,
+                loadingAccountsHide } = this.state;
     
         return(
             <View style = {styles.container}>
@@ -89,6 +91,7 @@ class Home extends Component{
                     <Accounts
                         style = {styles.accounts}
                         data = {accounts}
+                        loadingHide = {loadingAccountsHide}
                         devise = "FCFA"
                         onClickAccount = {() => {}} 
                         addAccount = {() => this.setState({showModalAdd: true})}
