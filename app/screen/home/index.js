@@ -11,6 +11,7 @@ import { records, stat } from '../../temp/fakeData';
 import StatResume from './components/StatResume';
 import DataBase from '../../data/dataBase';
 import ModalAddAccount from './components/ModalAddAccount';
+import ModalModifyAccount from './components/ModalModifyAccount';
 import Account from '../../data/model/account';
 import styles from './styles';
 
@@ -19,6 +20,7 @@ class Home extends Component{
     state = {
         accounts: [],
         showModalAdd: false,
+        showModalModify: false,
         loadingAccountsHide: true,
         db : new DataBase()
     }
@@ -33,7 +35,7 @@ class Home extends Component{
         this.state.db.getAccounts().then(res => {
             let array = res;
 
-            if (res.length > 0) 
+            if (res.length > 1) 
                 array.push(new Account(
                     'all',
                     'Tous',
@@ -74,11 +76,18 @@ class Home extends Component{
             
     }
 
+    onLongClickAccount = id => {
+        if (id !== 'all') {
+            this.setState({showModalModify: true})
+        }  
+    }
+
     render(){
 
         const { navigation } = this.props;
         const { accounts, 
                 showModalAdd,
+                showModalModify,
                 loadingAccountsHide } = this.state;
     
         return(
@@ -94,6 +103,7 @@ class Home extends Component{
                         loadingHide = {loadingAccountsHide}
                         devise = "FCFA"
                         onClickAccount = {() => {}} 
+                        onLongClickAccount = {this.onLongClickAccount}
                         addAccount = {() => this.setState({showModalAdd: true})}
                     />
 
@@ -152,6 +162,12 @@ class Home extends Component{
                     visible = {showModalAdd}
                     onShow = {() => this.setState({showModalAdd: false})}
                     addClick = {this.addAccount}
+                />
+                <ModalModifyAccount
+                    show = {showModalModify}
+                    back = {() => this.setState({showModalModify: false})}
+                    modified = {() => {}}
+                    deleted = {() => {}}
                 />
             </View>
         )

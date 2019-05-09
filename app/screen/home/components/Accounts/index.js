@@ -25,7 +25,8 @@ const Accounts = props => {
             devise,
             loadingHide,
             onClickAccount,
-            addAccount } = props;
+            addAccount,
+            onLongClickAccount } = props;
 
     return(
         <View style = {[style, styles.accounts]}>
@@ -43,6 +44,7 @@ const Accounts = props => {
                             return <Card
                                         onPress= {onClickAccount}
                                         account = {item}
+                                        onLongPress = {() => onLongClickAccount(item.key)}
                                         devise = {devise}
                                     />
                         }  

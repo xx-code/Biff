@@ -17,6 +17,7 @@ const Card = props => {
 
     const { style,
             onPress,
+            onLongPress,
             devise,
             account } = props;
 
@@ -24,6 +25,7 @@ const Card = props => {
         <TouchableOpacity
             style = {[style, {...styles.card, backgroundColor: account.color}]}
             onPress = {onPress}
+            onLongPress = {onLongPress}
         >
             <Text style = {styles.accountName}>{account.name}</Text>
             <Text style = {styles.accountAmount}>{account.amount}</Text>
