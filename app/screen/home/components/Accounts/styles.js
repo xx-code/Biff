@@ -16,6 +16,14 @@ const styles = StyleSheet.create({
         color: 'rgba(255, 255, 255, 0.7)',
         fontSize: 16,
     },
+    accountContent: {
+        flexDirection: 'row'
+    },
+    contentBtn: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderRadius: 10
+    },
     accountAmount: {
         fontSize: 18,
         fontWeight: '500',
@@ -37,7 +45,7 @@ const styles = StyleSheet.create({
         textAlign: 'center'
     },
     addButton: {
-        marginRight: 15
+        marginHorizontal: 15,
     }
 });
 

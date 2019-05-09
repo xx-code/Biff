@@ -27,7 +27,9 @@ const Accounts = props => {
     return(
         <View style = {[style, styles.accounts]}>
             <Text style = {styles.title}>VOS COMPTES</Text>
-            <ScrollView showsHorizontalScrollIndicator = {false} >
+            <ScrollView 
+                contentContainerStyle = {styles.accountContent}
+                showsHorizontalScrollIndicator = {false} >
                 <FlatList
                     data = {data}
                     horizontal = {true}
@@ -42,12 +44,13 @@ const Accounts = props => {
                                 }
                     showsHorizontalScrollIndicator = {false} 
                 />
-                <HideView hide = {data.length > 0 ? true : false}>
+                <View style = {styles.contentBtn}>
                     <AddButton
                         style = {styles.addButton} 
                         onPress = {addAccount}
                     />
-                </HideView>
+                </View>
+                
 
             </ScrollView>
             
