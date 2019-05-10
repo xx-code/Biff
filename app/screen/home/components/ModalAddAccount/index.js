@@ -69,19 +69,31 @@ class ModalAddAccount extends Component {
                                 name = "name"
                                 
                             />
-                            <FlatList
+                            <View style = {styles.colorList}>
+                                {
+                                    colors.map((item, id) => {
+                                        return (
+                                            <ColorIndicator
+                                                key = {item.key} 
+                                                color = {item.color}
+                                                active = {item.key == colorSelected ? true : false}
+                                                select = {() => this.onChangeColor(item.key, item.color)}
+                                            />
+                                        )
+                                    })
+                                }
+                            </View>
+                            {/*<FlatList
                                 style = {styles.colorList}
                                 data = {colors}
                                 horizontal
                                 showsHorizontalScrollIndicator = {false}
                                 renderItem = {({item}) => { 
                                         return (<ColorIndicator 
-                                                    color = {item.color}
-                                                    active = {item.key == colorSelected ? true : false}
-                                                    select = {() => this.onChangeColor(item.key, item.color)}
+                                                    
                                                  />)
                                 }} 
-                            />
+                            />*/}
                             <View style = {styles.buttonField}>
                                 <SimpleButton
                                     onPress = { () => addClick(name, color)}
