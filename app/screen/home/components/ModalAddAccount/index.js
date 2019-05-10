@@ -19,7 +19,7 @@ import { TEXT_PRIMARY_COLOR } from '../../../../config/colors';
 class ModalAddAccount extends Component {
 
     state = {
-        color: '',
+        color: colors[0].color,
         colorSelected: '1',
         name: ''
     }
@@ -33,10 +33,19 @@ class ModalAddAccount extends Component {
                        color:  color})
     }
 
+    back = () => {
+        this.setState({
+            color: colors[0].color,
+            colorSelected: '1',
+            color: colors[0].color,
+            colorSelected: '1',
+        })
+        this.props.onShow()
+    }
+
     render(){
 
         const { visible,
-                onShow, 
                 addClick } = this.props;
 
         const { colorSelected,
@@ -48,14 +57,14 @@ class ModalAddAccount extends Component {
                 animationType = "slide"
                 transparent
                 visible = {visible}
-                onRequestClose = {onShow}
+                onRequestClose = {this.back}
             >
                 <View style = {styles.container}>
                     <View style = {styles.background}></View>
                     <View style = {styles.content}>
                         <View style = {styles.header}>
                             <IconButton
-                                onPress = {onShow}
+                                onPress = {this.back}
                                 icon = "md-close"
                                 size = {30}
                                 color = {TEXT_PRIMARY_COLOR} 

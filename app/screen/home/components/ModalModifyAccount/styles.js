@@ -25,7 +25,10 @@ const styles = StyleSheet.create({
         position: 'absolute', 
         width: '100%', 
         top: '50%', 
-        marginTop: -50,
+        marginTop: -50
+    },
+    modalContent: {
+        marginHorizontal: 15,
         backgroundColor: SECONDARY_COLOR_LIGHT
     }
 })

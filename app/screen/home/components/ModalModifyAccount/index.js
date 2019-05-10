@@ -32,15 +32,17 @@ const Menu = props => {
                 style = {styles.displayMenu}>
             </TouchableOpacity>
             <View style = {styles.modal}>
-                <Item
-                    onPress = {modified}
-                    text = "Modifier"
-                    bottomBar
-                />
-                <Item
-                    onPress = {deleted}
-                    text = "Supprimer"
-                />
+                <View style = {styles.modalContent}>
+                    <Item
+                        onPress = {modified}
+                        text = "Modifier"
+                        bottomBar
+                    />
+                    <Item
+                        onPress = {deleted}
+                        text = "Supprimer"
+                    />
+                </View>
             </View>
         </Modal>
         

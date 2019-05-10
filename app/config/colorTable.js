@@ -6,7 +6,7 @@ const colors = [
     },
     {
         key: '2',
-        color: '#6C18A4'
+        color: '#43b0f4'
     },
     {
         key: '3',

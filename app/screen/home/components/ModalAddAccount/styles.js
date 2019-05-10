@@ -3,13 +3,14 @@ import { TRANSPARENT, SECONDARY_COLOR_LIGHT } from '../../../../config/colors';
 
 const styles = StyleSheet.create({
     selectedColor: {
-        borderColor: '#fff',
-        borderWidth: 2,
-        padding: 20,
-        marginHorizontal: 12
+        width: 35,
+        marginVertical: 2,
+        height: 35,
+        marginHorizontal: 10
     },
     unSelectedColor: {
-        padding: 20,
+        width: 30,
+        height: 30,
         marginHorizontal: 12
     },
     container: {
@@ -28,7 +29,6 @@ const styles = StyleSheet.create({
         padding: 10
     },
     header: {
-        paddingVertical: 8,
         paddingHorizontal: 6,
         flexDirection: 'row-reverse'
     },
@@ -37,6 +37,7 @@ const styles = StyleSheet.create({
     },
     colorList: {
         marginTop: 8,
+        flexDirection: 'row',
         flexWrap: 'wrap'
     },
     buttonField: {

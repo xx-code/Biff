@@ -19,6 +19,7 @@ class Home extends Component{
 
     state = {
         accounts: [],
+        account: new Account(),
         showModalAdd: false,
         showModalModify: false,
         loadingAccountsHide: true,
@@ -42,7 +43,11 @@ class Home extends Component{
                     '#3D3D3D')
                 )
             
-            this.setState({accounts: array, loadingAccountsHide: true})
+            let account = res.length > 1 ? array[array.length - 1] : new Account("null", "any", "#000")
+
+            this.setState({accounts: array, 
+                        loadingAccountsHide: true, 
+                        account: account})
         })
     }
 
@@ -87,6 +92,7 @@ class Home extends Component{
         const { navigation } = this.props;
         const { accounts, 
                 showModalAdd,
+                account,
                 showModalModify,
                 loadingAccountsHide } = this.state;
     
@@ -94,7 +100,7 @@ class Home extends Component{
             <View style = {styles.container}>
                 <TotalAmount
                     onClickAdd = {() => navigation.navigate('AddRecord')}
-                    amount = "3,2450.00 FCFA"
+                    amount = {`${account.amount} FCFA`}
                 />
                 <ScrollView showsVerticalScrollIndicator = {false}>
                     <Accounts
@@ -109,7 +115,7 @@ class Home extends Component{
 
                     <LastRecords
                         style = {styles.lastRecords}
-                        data = {records}
+                        data = {account.records}
                         devise = "FCFA"
                         handleClickItem = {() => {}}
                         handleClickMore = {() => {}}
