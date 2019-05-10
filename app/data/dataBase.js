@@ -43,7 +43,7 @@ export default class DataBase {
                                     res.rows.item(i).name.toString(),
                                     res.rows.item(i).color.toString(),
                                 )
-                                tx.executeSql('Select id, accountId, description, date, time, category, transfert from Records', [], (tx, res) => {
+                                tx.executeSql('Select id, accountId, description, date, time, category, transfert from Records', [], (tx2, res) => {
                                     if (res.row.length > 0) {
                                         for (let i = 0; i < res.rows.length; i++) { 
                                             account.setRecord(new Record(
@@ -80,6 +80,31 @@ export default class DataBase {
                     txn.executeSql('Insert Into Accounts (name, color) values (?, ?)', [account.name, account.color], (tx, res) => {
                         if (res.rowsAffected > 0) {
                             resolve(true)
+                        } else {
+                            resolve(false)
+                        }
+                    },
+                    err => {
+                        console.warn(err)
+                        resolve(false)
+                    })
+                })
+            }
+        )
+    }
+
+    deleteAccount = (id) => {
+        return new Promise(
+            (resolve, reject) => {
+                this.db.transaction(txn => {
+
+                    txn.executeSql('Delete from Records where accountId = (?)', [id], (tx, res) => {
+                        if (res.rowsAffected > 0) {
+                            tx.executeSql('Delete from Account where = (?)', [id], (tx2, res) => {
+                                if (res.rowsAffected > 0) {
+                                    resolve(true)
+                                } 
+                            })
                         } else {
                             resolve(false)
                         }
