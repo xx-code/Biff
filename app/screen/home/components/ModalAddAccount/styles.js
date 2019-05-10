@@ -36,7 +36,8 @@ const styles = StyleSheet.create({
         marginTop: 15
     },
     colorList: {
-        marginTop: 8
+        marginTop: 8,
+        flexWrap: 'wrap'
     },
     buttonField: {
         justifyContent: 'center',

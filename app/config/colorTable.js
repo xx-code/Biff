@@ -24,6 +24,18 @@ const colors = [
         key: '6',
         color: '#425d73'
     },
+    {
+        key: '7',
+        color: '#fe0000'
+    },
+    {
+        key: '8',
+        color: '#5f5f5f'
+    },
+    {
+        key: '9',
+        color: '#00a9bc'
+    },
 ]
 
 export default colors
