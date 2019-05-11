@@ -18,6 +18,7 @@ const Menu = props => {
     const { modified,
             deleted,
             show,
+            id,
             back } = props;
 
     return(
@@ -39,7 +40,7 @@ const Menu = props => {
                         bottomBar
                     />
                     <Item
-                        onPress = {deleted}
+                        onPress = {() => deleted(id)}
                         text = "Supprimer"
                     />
                 </View>

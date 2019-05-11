@@ -20,6 +20,7 @@ class Home extends Component{
     state = {
         accounts: [],
         account: new Account(),
+        accountSelected: null,
         showModalAdd: false,
         showModalModify: false,
         loadingAccountsHide: true,
@@ -36,14 +37,14 @@ class Home extends Component{
         this.state.db.getAccounts().then(res => {
             let array = res;
 
-            if (res.length > 1) 
+            if (res.length >= 1) 
                 array.push(new Account(
                     'all',
                     'Tous',
                     '#3D3D3D')
                 )
             
-            let account = res.length > 1 ? array[array.length - 1] : new Account("null", "any", "#000")
+            let account = res.length >= 1 ? array[array.length - 1] : new Account("null", "any", "#000")
 
             this.setState({accounts: array, 
                         loadingAccountsHide: true, 
@@ -66,24 +67,39 @@ class Home extends Component{
         }
 
         if (okSave) {
-            this.state.db.setAccount({name: name, color: color}).then(res => {
-                if (res) 
-                { 
-                    this.setState({showModalAdd: false})
-                    ToastAndroid.show("Données enregistrement", ToastAndroid.SHORT);
-                    this.fetchAllAccount();
-                } else {
-                    ToastAndroid.show("DB Erreur pendant l'enregistrement des données", ToastAndroid.SHORT);
-                } 
-                    
+            if (this.state.accountSelected === null) {
+                this.state.db.setAccount({name: name, color: color}).then(res => {
+                  
             })
+            } else {
+
+            }
+            
         } 
             
     }
 
+    deleteAccount = (id) => {
+        console.log(id)
+        this.state.db.deleteAccount(id).then(res => {
+            if (res) 
+            { 
+                this.setState({showModalModify: false, accountSelected: null})
+                ToastAndroid.show("Données Supprimé", ToastAndroid.SHORT);
+                this.fetchAllAccount();
+            } else {
+                this.setState({showModalModify: false})
+                ToastAndroid.show("DB Erreur pendant l'enregistrement des données", ToastAndroid.SHORT);
+            } 
+        })
+    }
+
     onLongClickAccount = id => {
         if (id !== 'all') {
-            this.setState({showModalModify: true})
+            this.setState({
+                showModalModify: true,
+                accountSelected: id
+            })
         }  
     }
 
@@ -93,7 +109,9 @@ class Home extends Component{
         const { accounts, 
                 showModalAdd,
                 account,
+                db,
                 showModalModify,
+                accountSelected,
                 loadingAccountsHide } = this.state;
     
         return(
@@ -171,9 +189,10 @@ class Home extends Component{
                 />
                 <ModalModifyAccount
                     show = {showModalModify}
-                    back = {() => this.setState({showModalModify: false})}
+                    back = {() => this.setState({showModalModify: false, accountSelected: null})}
                     modified = {() => {}}
-                    deleted = {() => {}}
+                    id = {accountSelected}
+                    deleted = {this.deleteAccount}
                 />
             </View>
         )

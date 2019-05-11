@@ -97,20 +97,21 @@ export default class DataBase {
         return new Promise(
             (resolve, reject) => {
                 this.db.transaction(txn => {
-
                     txn.executeSql('Delete from Records where accountId = (?)', [id], (tx, res) => {
-                        if (res.rowsAffected > 0) {
-                            tx.executeSql('Delete from Account where = (?)', [id], (tx2, res) => {
-                                if (res.rowsAffected > 0) {
-                                    resolve(true)
-                                } 
-                            })
-                        } else {
+                        console.log(res)
+                        tx.executeSql('Delete from Accounts where id = (?)', [id], (tx2, res) => {
+                            if (res.rowsAffected > 0) {
+                                resolve(true)
+                            } else {
+                                resolve(false)
+                            } 
+                        }, err => {
+                            console.log(err)
                             resolve(false)
-                        }
+                        })
                     },
                     err => {
-                        console.warn(err)
+                        console.log(err)
                         resolve(false)
                     })
                 })
