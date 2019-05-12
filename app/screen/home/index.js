@@ -21,6 +21,7 @@ class Home extends Component{
         accounts: [],
         account: new Account(),
         accountSelected: null,
+        accountSelectedId: null,
         showModalAdd: false,
         showModalModify: false,
         loadingAccountsHide: true,
@@ -67,12 +68,28 @@ class Home extends Component{
         }
 
         if (okSave) {
-            if (this.state.accountSelected === null) {
+            if (this.state.accountSelectedId === null) {
                 this.state.db.setAccount({name: name, color: color}).then(res => {
-                  
+                if (res) {
+                    this.setState({showModalAdd: false})
+                    ToastAndroid.show("Données Enregistré", ToastAndroid.SHORT);
+                    this.fetchAllAccount();
+                } else {
+                    this.setState({showModalAdd: false})
+                    ToastAndroid.show("DB Erreur pendant l'enregistrement des données", ToastAndroid.SHORT);
+                }
             })
             } else {
-
+                this.state.db.modifyAccount(this.state.accountSelectedId, {name: name, color: color}).then(res => {
+                    if (res) {
+                        this.setState({showModalAdd: false, accountSelected: null, accountSelectedId: null})
+                        ToastAndroid.show("Données Modifier", ToastAndroid.SHORT);
+                        this.fetchAllAccount();
+                    } else {
+                        this.setState({showModalAdd: false})
+                        ToastAndroid.show("DB Erreur pendant la modification des donnée", ToastAndroid.SHORT);
+                    }
+                })
             }
             
         } 
@@ -84,7 +101,7 @@ class Home extends Component{
         this.state.db.deleteAccount(id).then(res => {
             if (res) 
             { 
-                this.setState({showModalModify: false, accountSelected: null})
+                this.setState({showModalModify: false, accountSelectedId: null})
                 ToastAndroid.show("Données Supprimé", ToastAndroid.SHORT);
                 this.fetchAllAccount();
             } else {
@@ -95,10 +112,13 @@ class Home extends Component{
     }
 
     onLongClickAccount = id => {
+        const { accounts } = this.state
+
         if (id !== 'all') {
             this.setState({
                 showModalModify: true,
-                accountSelected: id
+                accountSelectedId: id,
+                accountSelected: accounts[accounts.findIndex(account => account.key === id)]
             })
         }  
     }
@@ -111,6 +131,7 @@ class Home extends Component{
                 account,
                 db,
                 showModalModify,
+                accountSelectedId,
                 accountSelected,
                 loadingAccountsHide } = this.state;
     
@@ -183,15 +204,16 @@ class Home extends Component{
                     />
                 </ScrollView>
                 <ModalAddAccount
+                    accountSelected = {accountSelected}
                     visible = {showModalAdd}
                     onShow = {() => this.setState({showModalAdd: false})}
                     addClick = {this.addAccount}
                 />
                 <ModalModifyAccount
                     show = {showModalModify}
-                    back = {() => this.setState({showModalModify: false, accountSelected: null})}
-                    modified = {() => {}}
-                    id = {accountSelected}
+                    back = {() => this.setState({showModalModify: false, accountSelectedId: null})}
+                    modified = {() => this.setState({showModalAdd: true, showModalModify: false})}
+                    id = {accountSelectedId}
                     deleted = {this.deleteAccount}
                 />
             </View>

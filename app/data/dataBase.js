@@ -118,4 +118,23 @@ export default class DataBase {
             }
         )
     }
+
+    modifyAccount = (id, account) => {
+        return new Promise(
+            (resolve, reject) => {
+                this.db.transaction(txn => {
+                    txn.executeSql('Update Accounts Set name = (?), color = (?) where id = (?)', [account.name, account.color, id], (tx, res) => {
+                        if (res.rowsAffected > 0) {
+                            resolve(true)
+                        } else {
+                            resolve(false)
+                        }
+                    }, err => {
+                        console.log(err)
+                        resolve(false)
+                    })
+                })
+            }
+        )
+    }
 } 

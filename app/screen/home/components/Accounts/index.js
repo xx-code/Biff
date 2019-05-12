@@ -39,6 +39,7 @@ const Accounts = props => {
                         hide = {!loadingHide}>
                     <FlatList
                         data = {data}
+                        extraData = {(item) => item.key}
                         horizontal = {true}
                         renderItem = {({item}) =>{
                             return <Card

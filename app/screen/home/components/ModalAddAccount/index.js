@@ -10,7 +10,6 @@ import colors from '../../../../config/colorTable';
 import styles from './styles';
 import { TEXT_PRIMARY_COLOR } from '../../../../config/colors';
 
-
 /**
  * @param visible boolean
  * @param onShow function
@@ -22,6 +21,19 @@ class ModalAddAccount extends Component {
         color: colors[0].color,
         colorSelected: '1',
         name: ''
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.accountSelected !== null) {
+            
+            colorSelect = nextProps.accountSelected
+
+            this.setState({
+                color: colorSelect.color,
+                name: colorSelect.name,
+                colorSelected: colors[colors.findIndex(color => color.color === colorSelect.color)].key
+            })
+        }
     }
 
     onChangeText = (text, name) => {
