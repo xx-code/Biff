@@ -61,12 +61,14 @@ class ImageLabelPicker extends Component {
 
         return(
             <View style = {[style, styles.simplePicker]}>
-                <Icon 
-                    style = {styles.icon}
-                    name = {icon} 
-                    size = {30}
-                    color = {color}
-                />
+                <HideView hide = {!hideSelection}>
+                    <Icon 
+                        style = {styles.icon}
+                        name = {icon} 
+                        size = {30}
+                        color = {color}
+                    />
+                </HideView>
                 <View style = {{flex: 1, marginLeft: 5}}>
                     <View style = {styles.selectedPicker}>
                         <Text style = {styles.textSelectSimplePicker}>{selected}</Text>

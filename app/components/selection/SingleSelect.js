@@ -25,6 +25,8 @@ class SingleSelect extends Component{
 
     render(){
         const { style,
+                label1,
+                label2,
                 value1,
                 value2 } = this.props;
 
@@ -35,12 +37,12 @@ class SingleSelect extends Component{
                     <View style = {styles.singleSelect}>
                         <TouchableWithoutFeedback onPress = {() => this.onChangeValue(value1, 0)}>
                             <View style = {[styles.itemSingleSelect, selected === 0 ? styles.activeSingle : styles.inactiveSingle]}>
-                                <Text style = {selected === 0 ? styles.activeSingleText : styles.inactiveSingleText}>{value1}</Text>
+                                <Text style = {selected === 0 ? styles.activeSingleText : styles.inactiveSingleText}>{label1}</Text>
                             </View>
                         </TouchableWithoutFeedback>
                         <TouchableWithoutFeedback  onPress = {() => this.onChangeValue(value2, 1)}>
                             <View style = {[styles.itemSingleSelect, selected === 1 ? styles.activeSingle : styles.inactiveSingle]}>
-                                <Text style = {selected === 1 ? styles.activeSingleText : styles.inactiveSingleText}>{value2}</Text>
+                                <Text style = {selected === 1 ? styles.activeSingleText : styles.inactiveSingleText}>{label2}</Text>
                             </View>
                         </TouchableWithoutFeedback>
                     </View>

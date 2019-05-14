@@ -69,7 +69,7 @@ const styles = StyleSheet.create({
         flex: 1
     },
     icon: {
-        position: 'absolute'
+        marginRight: 8
     }
 })
 

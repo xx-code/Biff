@@ -19,6 +19,10 @@ const Styles = StyleSheet.create({
         width: '50%',
         marginTop: 10
     },
+    cutViewPicker: {
+        width: '70%',
+        marginTop: 10
+    },
     description: {
         marginTop: 10
     },

@@ -14,6 +14,7 @@ import { SimplePicker,
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import styles from './styles';
 import categoryIcon from '../../config/categoryIcon';
+import DataBase from '../../data/dataBase';
 
 class AddRecord extends Component{
     static navigationOptions = {
@@ -21,14 +22,28 @@ class AddRecord extends Component{
     }
 
     state = {
-        account: 0,
-        type: '',
+        account: '',
+        type: 'income',
+        accounts: [],
         description: '',
         date: '',
         time: '',
-        amount: '',
+        amount: 0,
         category: '',
-        errors: {}
+        errors: {},
+        db: new DataBase()
+    }
+
+    componentDidMount(){
+        this.fetchAccount()
+    }
+
+    fetchAccount = () => {
+        this.state.db.getAccounts().then(res => {
+            if (res.length > 0) {
+                this.setState({accounts: res})
+            }
+        })
     }
 
     onChangeValueAccount = value => {
@@ -98,25 +113,34 @@ class AddRecord extends Component{
         if (account === '' ){
             okSave = false;
             errors.account = 'Selectionner le compte de la transaction';
+        } else {
+            errors.account = '';
         }
 
-        if (amount <= 0){
+        if ( parseInt(amount) <= 0){
             okSave = false;
             errors.amount = 'Entrer une somme superieur a 0';
+        } else {
+            errors.amount = '';
         }
 
         if (date === '' ){
             okSave = false;
             errors.date = 'Choisissez une date';
+        } else {
+            errors.date = '';
         }
 
         if (time === '' ){
             okSave = false;
             errors.time = 'Choisissez un temps';
+        } else {
+            errors.time = '';
         }
 
         if (okSave) {
             // save
+            console.log(this.state)
         } else {
             this.setState({errors: errors});
         }
@@ -127,6 +151,7 @@ class AddRecord extends Component{
 
         const { description,
                 amount,
+                accounts,
                 date,
                 time,
                 errors } = this.state;
@@ -137,15 +162,17 @@ class AddRecord extends Component{
                 <KeyboardAwareScrollView resetScrollToCoords={{ x: 0, y: 0 }} >
                     <View style = {styles.inpView}>
                         <SingleSelect
-                            value1= "Revenu"
-                            value2= "Dépense" 
+                            label1= "Revenu"
+                            label2= "Dépense"
+                            value1= "income"
+                            value2= "depense" 
                             onChangeValue = {this.onChangeType}
                         />
                         <View style = {styles.cutView}>
                             <SimplePicker
                                 label = "Compte"
                                 onChangeValue = {this.onChangeValueAccount}
-                                data = {[{label: 'unit', value: 'u'}, {label: 'rider', value: 'r'}, {label: 'venus', value: 'v'}]} 
+                                data = {accounts} 
                             />
                         </View>
                         <Text style = {styles.errors}>{errors.account}</Text>
@@ -184,7 +211,7 @@ class AddRecord extends Component{
                                 error = {errors.amount}
                             />
                         </View>
-                        <View style = {styles.cutView}>
+                        <View style = {styles.cutViewPicker}>
                             <ImageLabelPicker
                                 onChangeValue = {this.onChangeCategory}
                                 data = {categoryIcon} 
@@ -194,7 +221,7 @@ class AddRecord extends Component{
                     <View style = {styles.buttonView}>
                         <SimpleButton 
                             label = "Sauvegarder"
-                            onPress = {() => console.warn(this.state)}
+                            onPress = {this.saveValues}
                         />
                         <LinkButton 
                             label = "Transfère"

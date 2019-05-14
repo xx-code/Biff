@@ -26,7 +26,7 @@ const Item = props => {
 /**
  * @param style object
  * @param onChangeValue function(value)
- * @param data array of object {label: string value: string}
+ * @param data array of object {name: string key: string}
  * @param label string
  */
 class SimplePicker extends Component {
@@ -68,11 +68,11 @@ class SimplePicker extends Component {
                     hide = {hideSelection}>
                     <FlatList
                         data = {data}
-                        keyExtractor = {(item, value) => item.label}
+                        keyExtractor = {(item, value) => item.key}
                         showsVerticalScrollIndicator = {false}
                         renderItem = {({item, index}) => <Item 
-                                                            label = {item.label}
-                                                            onPress = {() => this.onClickItem(item.value, item.label)} 
+                                                            label = {item.name}
+                                                            onPress = {() => this.onClickItem(item.key, item.name)} 
                                                          />
                                      } 
                     />

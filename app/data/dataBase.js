@@ -137,4 +137,65 @@ export default class DataBase {
             }
         )
     }
+
+    addRecord = (record) => {
+        return new Promise(
+            (resolve, reject) => {
+                this.db.transaction(txn => {
+                    txn.executeSql('Insert Into Records (accountId, description, date, time, category, transfert) values (?, ?, ?, ?, ?, ?)', 
+                        [record.accountId, record.description, record.date, record.time, record.category, record.transfert], (tx, res) => {
+                        
+                        if (res.rowsAffected > 0) {
+                            resolve(true)
+                        } else {
+                            resolve(false)
+                        }
+                    }, err => {
+                        console.log(err)
+                        resolve(false)
+                    })
+                })
+            }
+        )
+    }
+
+    modifyRecord = (id, record) => {
+        return new Promise(
+            (resolve, reject) => {
+                this.db.transaction(txn => {
+                    txn.executeSql('Update Records Set accountId = (?), description = (?), date = (?), time = (?), category = (?), transfert = (?) where id = (?)',
+                                    [record.accountId, record.description, record.date, record.time, record.category, record.transfert, id], (tx, res) => {
+                        
+                        if (res.rowsAffected > 0) {
+                            resolve(true)
+                        } else {
+                            resolve(false)
+                        }
+                    }, err => {
+                        console.log(err)
+                        resolve(false)
+                    })
+                })
+            }
+        )
+    }
+
+    deleteRecord = (id) => {
+        return new Promise(
+            (resolve, reject) => {
+                this.db.transaction(txn => {
+                    txn.executeSql('Delete from Records where id = (?)', [id], (tx, res) => {
+                        if (res.rowsAffected > 0) {
+                            resolve(true)
+                        } else {
+                            resolve(false)
+                        }
+                    }, err => {
+                        console.log(err)
+                        resolve(false)
+                    })
+                })
+            }
+        )
+    }
 } 

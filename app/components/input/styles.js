@@ -18,7 +18,7 @@ const Styles = StyleSheet.create({
         color: ALERT_COLOR
     },
     simpleInput: {
-
+        
     },
     simpleInputLabel: {
         fontSize: 20,

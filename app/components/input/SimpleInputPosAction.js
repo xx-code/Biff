@@ -33,10 +33,10 @@ const SimpleInputPosAction = props => {
                     underlineColorAndroid = {SECONDARY_COLOR_HIGHT}
                     editable = {false}
                 />
+                <Text style = {styles.errors}>{error}</Text>
             </View>
-            <Text style = {styles.errors}>{error}</Text>
         </TouchableWithoutFeedback>
-        
+            
     )
 }
 
