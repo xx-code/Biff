@@ -108,6 +108,8 @@ class AddRecord extends Component{
                 amount,
                 category } = this.state;
 
+        const { navigation } = this.props;
+
         let okSave = true;
         let errors = {}
         if (account === '' ){
@@ -117,7 +119,7 @@ class AddRecord extends Component{
             errors.account = '';
         }
 
-        if ( parseInt(amount) <= 0){
+        if ( parseInt(amount) <= 0) {
             okSave = false;
             errors.amount = 'Entrer une somme superieur a 0';
         } else {
@@ -139,7 +141,21 @@ class AddRecord extends Component{
         }
 
         if (okSave) {
-            // save
+            this.state.db.addRecord({
+                accountId: account, 
+                description: description, 
+                date: date, 
+                time: time, 
+                category: category, 
+                transfert: 1
+            }).then(res => {
+                if (res) {
+                    navigation.goBack()
+                    ToastAndroid.show('Transaction sauvegardé', ToastAndroid.SHORT)
+                } else {    
+                    ToastAndroid.show('Impossible de sauvegarder la transaction', ToastAndroid.SHORT)
+                }
+            })
             console.log(this.state)
         } else {
             this.setState({errors: errors});

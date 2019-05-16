@@ -43,7 +43,7 @@ const LastRecords = props => {
                 data = {array}
                 horizontal = {false}
                 renderItem = {({item, index}) => <Record
-                                                    onPress = {() => handleClickItem(item.key)}
+                                                    onPress = {() => handleClickItem(item.id)}
                                                     category = {item.category}
                                                     description = {item.description}
                                                     devise = {devise}

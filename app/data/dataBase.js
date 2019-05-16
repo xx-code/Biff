@@ -13,7 +13,7 @@ export default class DataBase {
                 () =>{ }
             ),
             txn.executeSql(
-                'CREATE TABLE IF NOT EXISTS Records(id INTEGER PRIMARY KEY AUTOINCREMENT, accountId INTEGER, description TEXT, date VARCHAR(100), time VARCHAR(100), category TEXT, transfert INTEGER, FOREIGN KEY(accountId) REFERENCES Accounts(id))',
+                'CREATE TABLE IF NOT EXISTS Records(id INTEGER PRIMARY KEY AUTOINCREMENT, accountId INTEGER, amount INTEGER, description TEXT, date VARCHAR(100), time VARCHAR(100), category TEXT, transfert INTEGER, FOREIGN KEY(accountId) REFERENCES Accounts(id))',
                 [],
                 () =>{ }
             ),
@@ -44,11 +44,14 @@ export default class DataBase {
                                     res.rows.item(i).color.toString(),
                                 )
                                 tx.executeSql('Select id, accountId, description, date, time, category, transfert from Records', [], (tx2, res) => {
-                                    if (res.row.length > 0) {
+                                    
+                                    if (res.rows.length > 0) {                                     
                                         for (let i = 0; i < res.rows.length; i++) { 
-                                            account.setRecord(new Record(
+                                            
+                                            account.records.push(new Record(
                                                 res.rows.item(i).id.toString(),
                                                 res.rows.item(i).accountId.toString(),
+                                                res.rows.item(i).amount,
                                                 res.rows.item(i).description.toString(),
                                                 res.rows.item(i).date.toString(),
                                                 res.rows.item(i).time.toString(),
@@ -57,12 +60,14 @@ export default class DataBase {
                                             ))
                                         }
                                     }
+                                    account.setAmount();
+                                    
+                                    
                                 })
-                                
-                                account.setAmount();
-
                                 result.push(account)
+                                        
                             }
+                            console.log(result)
                         }
                         resolve(result)
                     }, err => resolve([]))
@@ -143,7 +148,7 @@ export default class DataBase {
             (resolve, reject) => {
                 this.db.transaction(txn => {
                     txn.executeSql('Insert Into Records (accountId, description, date, time, category, transfert) values (?, ?, ?, ?, ?, ?)', 
-                        [record.accountId, record.description, record.date, record.time, record.category, record.transfert], (tx, res) => {
+                        [record.accountId, record.amount, record.description, record.date, record.time, record.category, record.transfert], (tx, res) => {
                         
                         if (res.rowsAffected > 0) {
                             resolve(true)
@@ -163,8 +168,8 @@ export default class DataBase {
         return new Promise(
             (resolve, reject) => {
                 this.db.transaction(txn => {
-                    txn.executeSql('Update Records Set accountId = (?), description = (?), date = (?), time = (?), category = (?), transfert = (?) where id = (?)',
-                                    [record.accountId, record.description, record.date, record.time, record.category, record.transfert, id], (tx, res) => {
+                    txn.executeSql('Update Records Set accountId = (?), amount = (?) description = (?), date = (?), time = (?), category = (?), transfert = (?) where id = (?)',
+                                    [record.accountId, record.amount, record.description, record.date, record.time, record.category, record.transfert, id], (tx, res) => {
                         
                         if (res.rowsAffected > 0) {
                             resolve(true)
