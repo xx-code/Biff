@@ -43,7 +43,7 @@ const Accounts = props => {
                         horizontal = {true}
                         renderItem = {({item}) =>{
                             return <Card
-                                        onPress= {onClickAccount}
+                                        onPress= { () => onClickAccount(item.key)}
                                         account = {item}
                                         onLongPress = {() => onLongClickAccount(item.key)}
                                         devise = {devise}

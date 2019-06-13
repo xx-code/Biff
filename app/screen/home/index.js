@@ -13,7 +13,6 @@ import DataBase from '../../data/dataBase';
 import ModalAddAccount from './components/ModalAddAccount';
 import ModalModifyAccount from './components/ModalModifyAccount';
 import Account from '../../data/model/account';
-import Record from '../data/model/record';
 import styles from './styles';
 
 class Home extends Component{
@@ -38,24 +37,33 @@ class Home extends Component{
         this.setState({loadingAccountsHide: false})
         this.state.db.getAccounts().then(res => {
             let array = res;
-            console.log(res[0].records)
             
+
             if (res.length >= 1) {
                 let allAccount = new Account(
                     'all',
                     'Tous',
                     '#3D3D3D')
-                for (let e = 0; e < array.length; e++) { 
-                    console.log(array[e].records[0])
+                    
+                for (let e = 0; e < array.length; e++) {
                     for (let i = 0; i < array[e].records.length; i++) {
-                        console.log(account.records[i])
+                        let record = array[e].records[i]
+                        allAccount.setRecord({
+                            id: record.key, 
+                            accountId: record.accountId, 
+                            amount: record.amount, 
+                            description: record.description, 
+                            date: record.date, 
+                            time: record.time, 
+                            category: record.category, 
+                            transfert: record.transfert
+                        })    
                     }
                 }
                 allAccount.setAmount()
-                console.log(allAccount)
                 array.push(allAccount)
             }
-
+            console.log(array)
             let account = res.length >= 1 ? array[array.length - 1] : new Account("null", "any", "#000")
 
             this.setState({accounts: array, 
@@ -134,6 +142,11 @@ class Home extends Component{
         }  
     }
 
+    onClickAccount = id => {
+        const accountSelected = this.state.accounts.find(account => account.key === id)
+        this.setState({account: accountSelected})
+    }
+
     render(){
 
         const { navigation } = this.props;
@@ -158,7 +171,7 @@ class Home extends Component{
                         data = {accounts}
                         loadingHide = {loadingAccountsHide}
                         devise = "FCFA"
-                        onClickAccount = {() => {}} 
+                        onClickAccount = {this.onClickAccount} 
                         onLongClickAccount = {this.onLongClickAccount}
                         addAccount = {() => this.setState({showModalAdd: true})}
                     />

@@ -11,7 +11,6 @@ const SimpleLoading = props => {
 
     const { active,
             style } = props;
-    console.log(active)
     return(
         <HideView 
             style = {style}

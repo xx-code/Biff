@@ -33,9 +33,9 @@ export default class DataBase {
     getAccounts = () => {
         return new Promise(
             (resolve, reject) => {
+                const accounts = [];
                 this.db.transaction(txn => {
                     txn.executeSql('Select id, name, color from Accounts', [], (tx, res) => {
-                        const result = [];
                         if (res.rows.length > 0) {
                             for (let i = 0; i < res.rows.length; i++) {
                                 let account = new Account(
@@ -43,35 +43,36 @@ export default class DataBase {
                                     res.rows.item(i).name.toString(),
                                     res.rows.item(i).color.toString(),
                                 )
-                                tx.executeSql('Select id, accountId, description, date, time, category, transfert from Records', [], (tx2, res) => {
-                                    
-                                    if (res.rows.length > 0) {                                     
-                                        for (let i = 0; i < res.rows.length; i++) { 
-                                            
-                                            account.records.push(new Record(
-                                                res.rows.item(i).id.toString(),
-                                                res.rows.item(i).accountId.toString(),
-                                                res.rows.item(i).amount,
-                                                res.rows.item(i).description.toString(),
-                                                res.rows.item(i).date.toString(),
-                                                res.rows.item(i).time.toString(),
-                                                res.rows.item(i).category.toString(),
-                                                res.rows.item(i).transfert
-                                            ))
-                                        }
-                                    }
-                                    account.setAmount();
-                                    
-                                    
-                                })
-                                result.push(account)
-                                        
+                                accounts.push(account)       
                             }
-                            console.log(result)
                         }
-                        resolve(result)
-                    }, err => resolve([]))
-
+                    }, err => console.log(err)),
+                    txn.executeSql('Select id, accountId, amount, description, date, time, category, transfert from Records', [], (tx2, res) => {
+                        if (res.rows.length > 0) {
+                            for (let e = 0; e < accounts.length; e++) {
+                                
+                                for (let i = 0; i < res.rows.length; i++) { 
+                                    console.log(res.rows.item(i).accountId.toString())
+                                    if (accounts[e].key === res.rows.item(i).accountId.toString()) {
+                                        accounts[e].setRecord({
+                                            id: res.rows.item(i).id.toString(), 
+                                            accountId: res.rows.item(i).accountId.toString(), 
+                                            amount: res.rows.item(i).amount, 
+                                            description: res.rows.item(i).description.toString(), 
+                                            date: res.rows.item(i).date.toString(), 
+                                            time: res.rows.item(i).time.toString(), 
+                                            category: res.rows.item(i).category.toString(), 
+                                            transfert: res.rows.item(i).transfert
+                                        })
+                                    }
+                                }
+                                accounts[e].setAmount()
+                            }                                     
+                            
+                        }
+                        resolve(accounts) 
+                    }, err => console.log(err))
+                    
                 })
             }
         )
@@ -146,8 +147,9 @@ export default class DataBase {
     addRecord = (record) => {
         return new Promise(
             (resolve, reject) => {
+                console.log(record)
                 this.db.transaction(txn => {
-                    txn.executeSql('Insert Into Records (accountId, description, date, time, category, transfert) values (?, ?, ?, ?, ?, ?)', 
+                    txn.executeSql('Insert Into Records (accountId, amount, description, date, time, category, transfert) values (?, ?, ?, ?, ?, ?, ?)', 
                         [record.accountId, record.amount, record.description, record.date, record.time, record.category, record.transfert], (tx, res) => {
                         
                         if (res.rowsAffected > 0) {
@@ -156,7 +158,6 @@ export default class DataBase {
                             resolve(false)
                         }
                     }, err => {
-                        console.log(err)
                         resolve(false)
                     })
                 })

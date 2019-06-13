@@ -29,7 +29,7 @@ const Record = props => {
             date,
             showBar } = props;
 
-    const getCategory = categoryIcon.find(cat => cat.label === category)
+    const getCategory = categoryIcon.find(cat => cat.key === category)
 
     return(
         <TouchableOpacity
@@ -44,7 +44,7 @@ const Record = props => {
                     size = {50} 
                 />
                 <View style = {styles.boxRecordInfo}>
-                    <Text style = {styles.category}>{category}</Text>
+                    <Text style = {styles.category}>{getCategory.label}</Text>
                     <Text style = {styles.description}>{description}</Text>
                 </View>
                 <View style = {styles.boxRecordPrice}>

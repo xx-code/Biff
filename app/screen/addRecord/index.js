@@ -28,7 +28,7 @@ class AddRecord extends Component{
         description: '',
         date: '',
         time: '',
-        amount: 0,
+        amount: '0',
         category: '',
         errors: {},
         db: new DataBase()
@@ -141,14 +141,17 @@ class AddRecord extends Component{
         }
 
         if (okSave) {
-            this.state.db.addRecord({
-                accountId: account, 
+            let data = {
+                accountId: account,
+                amount: parseInt(amount), 
                 description: description, 
                 date: date, 
                 time: time, 
                 category: category, 
                 transfert: 1
-            }).then(res => {
+            }
+            console.log(data)
+            this.state.db.addRecord(data).then(res => {
                 if (res) {
                     navigation.goBack()
                     ToastAndroid.show('Transaction sauvegardé', ToastAndroid.SHORT)
@@ -156,7 +159,7 @@ class AddRecord extends Component{
                     ToastAndroid.show('Impossible de sauvegarder la transaction', ToastAndroid.SHORT)
                 }
             })
-            console.log(this.state)
+            
         } else {
             this.setState({errors: errors});
         }
