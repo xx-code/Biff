@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {Component} from 'react';
 import { View,
          Text,
          FlatList,
@@ -18,15 +18,25 @@ import { AddButton } from '../../../../components/button';
  * @param addAccount function
  * @param loading boolean
  */
-const Accounts = props => {
+class Accounts extends Component{
 
-    const { style,
+    scrollAfterClick = key => {
+        const { onClickAccount } = this.props;
+        if (this.flatList !== null ){
+            this.flatList.scrollToOffset({animated: true, offset: 0})
+            onClickAccount(key)
+        }
+    }
+
+    render() {
+        const { 
+            style,
             data,
             devise,
             loadingHide,
             onClickAccount,
             addAccount,
-            onLongClickAccount } = props;
+            onLongClickAccount } = this.props;
 
     return(
         <View style = {[style, styles.accounts]}>
@@ -39,12 +49,14 @@ const Accounts = props => {
                         hide = {!loadingHide}>
                     <FlatList
                         data = {data}
+                        ref = {(ref) => {this.flatList = ref}}
                         extraData = {(item) => item.key}
                         horizontal = {true}
                         renderItem = {({item}) =>{
                             return <Card
-                                        onPress= { () => onClickAccount(item.key)}
+                                        onPress= { () => this.scrollAfterClick(item.key)}
                                         account = {item}
+                                        index = {data.indexOf(item)}
                                         onLongPress = {() => onLongClickAccount(item.key)}
                                         devise = {devise}
                                     />
@@ -60,9 +72,9 @@ const Accounts = props => {
                     </View>
                 </HideView>
             </ScrollView>
-            
         </View>
     )
+    }
 }
 
 export default Accounts

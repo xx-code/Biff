@@ -7,6 +7,7 @@ import styles from './styles';
 /**
  * 
  * @param style object
+ * @param index num
  * @param onPress function
  * @param name string
  * @param amount number
@@ -15,15 +16,18 @@ import styles from './styles';
  */
 const Card = props => {
 
-    const { style,
+    const { index,
+            style,
             onPress,
             onLongPress,
             devise,
             account } = props;
 
+    let color = index !== 0 ? "#cfd8dc" : account.color;     
+
     return(
         <TouchableOpacity
-            style = {[style, {...styles.card, backgroundColor: account.color}]}
+            style = {[style, {...styles.card, backgroundColor: color}]}
             onPress = {onPress}
             onLongPress = {onLongPress}
         >

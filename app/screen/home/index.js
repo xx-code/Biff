@@ -8,6 +8,7 @@ import TotalAmount from './components/TotalAmount';
 import Accounts from './components/Accounts';
 import LastRecords from './components/LastRecords'
 import { records, stat } from '../../temp/fakeData';
+import Swap from '../../libs/swapArray';
 import StatResume from './components/StatResume';
 import DataBase from '../../data/dataBase';
 import ModalAddAccount from './components/ModalAddAccount';
@@ -61,7 +62,7 @@ class Home extends Component{
                     }
                 }
                 allAccount.setAmount()
-                array.push(allAccount)
+                array.unshift(allAccount)
             }
             console.log(array)
             let account = res.length >= 1 ? array[array.length - 1] : new Account("null", "any", "#000")
@@ -143,8 +144,10 @@ class Home extends Component{
     }
 
     onClickAccount = id => {
-        const accountSelected = this.state.accounts.find(account => account.key === id)
-        this.setState({account: accountSelected})
+        const { accounts } = this.state;
+        const accountSelected = accounts.find(account => account.key === id)
+        let newAccounts = Swap(accounts, 0, accounts.indexOf(accountSelected))
+        this.setState({account: accountSelected, accounts: newAccounts})
     }
 
     render(){
