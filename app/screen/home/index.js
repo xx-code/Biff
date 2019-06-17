@@ -63,13 +63,16 @@ class Home extends Component{
                 }
                 allAccount.setAmount()
                 array.unshift(allAccount)
+                console.log(allAccount)
             }
-            console.log(array)
-            let account = res.length >= 1 ? array[array.length - 1] : new Account("null", "any", "#000")
+            
+            let account = res.length >= 1 ? array[0] : new Account("null", "any", "#000")
 
-            this.setState({accounts: array, 
-                        loadingAccountsHide: true, 
-                        account: account})
+            this.setState({
+                            accounts: array, 
+                            loadingAccountsHide: true, 
+                            account: account
+                        })
         })
     }
 
@@ -150,6 +153,12 @@ class Home extends Component{
         this.setState({account: accountSelected, accounts: newAccounts})
     }
 
+    onClickRecord = id => {
+        this.props.navigation.navigate('AddRecord', {
+            idRecord: id
+        })
+    }
+
     render(){
 
         const { navigation } = this.props;
@@ -183,7 +192,7 @@ class Home extends Component{
                         style = {styles.lastRecords}
                         data = {account.records}
                         devise = "FCFA"
-                        handleClickItem = {() => {}}
+                        handleClickItem = {this.onClickRecord}
                         handleClickMore = {() => {}}
                     />
 

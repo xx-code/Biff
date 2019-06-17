@@ -35,7 +35,7 @@ export default class DataBase {
             (resolve, reject) => {
                 const accounts = [];
                 this.db.transaction(txn => {
-                    txn.executeSql('Select id, name, color from Accounts', [], (tx, res) => {
+                    txn.executeSql('Select id, name, color from Accounts', [], (tx1, res) => {
                         if (res.rows.length > 0) {
                             for (let i = 0; i < res.rows.length; i++) {
                                 let account = new Account(
@@ -73,6 +73,33 @@ export default class DataBase {
                         resolve(accounts) 
                     }, err => console.log(err))
                     
+                })
+            }
+        )
+    }
+
+    getRecord = (id) => {
+        return new Promise(
+            (resolve, reject) => {
+                this.db.transaction(txn => {
+                    txn.executeSql('Select id, accountId, amount, description, date, time, category, transfert from Records where id = (?)', [id], (tx2, res) => {
+                        if(res.rows.length > 0) {
+                            let record = new Record(
+                                res.rows.item(0).id.toString(), 
+                                res.rows.item(0).accountId.toString(), 
+                                res.rows.item(0).amount, 
+                                res.rows.item(0).description.toString(), 
+                                res.rows.item(0).date.toString(), 
+                                res.rows.item(0).time.toString(), 
+                                res.rows.item(0).category.toString(), 
+                                res.rows.item(0).transfert
+                            )
+
+                            resolve(record)
+                        } else {
+                            resolve(null)
+                        }
+                    })
                 })
             }
         )
@@ -169,9 +196,8 @@ export default class DataBase {
         return new Promise(
             (resolve, reject) => {
                 this.db.transaction(txn => {
-                    txn.executeSql('Update Records Set accountId = (?), amount = (?) description = (?), date = (?), time = (?), category = (?), transfert = (?) where id = (?)',
-                                    [record.accountId, record.amount, record.description, record.date, record.time, record.category, record.transfert, id], (tx, res) => {
-                        
+                    txn.executeSql('Update Records Set amount = (?) description = (?), date = (?), time = (?), category = (?), transfert = (?) where id = (?)',
+                                    [record.amount, record.description, record.date, record.time, record.category, record.transfert, id], (tx, res) => {
                         if (res.rowsAffected > 0) {
                             resolve(true)
                         } else {

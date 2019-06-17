@@ -29,19 +29,52 @@ class AddRecord extends Component{
         date: '',
         time: '',
         amount: '0',
-        category: '',
+        category: 1,
         errors: {},
         db: new DataBase()
     }
 
+    getParam = () => {
+        const { navigation } = this.props;
+        const id = navigation.getParam('idRecord', null)
+        return ({id: id})
+    }
+
     componentDidMount(){
         this.fetchAccount()
+        const param = this.getParam()         
+        console.log(param)
+        if (param.id !== null) {
+            this.fetchRecord(param.id)
+        }
     }
 
     fetchAccount = () => {
         this.state.db.getAccounts().then(res => {
             if (res.length > 0) {
                 this.setState({accounts: res})
+            }
+        })
+    }
+
+    fetchRecord = (id) => {
+        this.state.db.getRecord(id).then(res => {
+            if(res !== null) {
+                
+                const account = this.state.accounts.find(account => account.key === res.accountId)
+                console.log(account)
+                this.setState({
+                    account: account.name,
+                    type: 'income',
+                    description: res.description,
+                    date: res.date,
+                    time: res.time,
+                    amount: res.amount.toString(),
+                    category: parseInt(res.category)
+                })
+            } else {
+                ToastAndroid.show("Errors transaction n'existe pas", ToastAndroid.LONG)
+                this.props.navigation.goBack()
             }
         })
     }
@@ -150,15 +183,29 @@ class AddRecord extends Component{
                 category: category, 
                 transfert: 1
             }
-            console.log(data)
-            this.state.db.addRecord(data).then(res => {
-                if (res) {
-                    navigation.goBack()
-                    ToastAndroid.show('Transaction sauvegardé', ToastAndroid.SHORT)
-                } else {    
-                    ToastAndroid.show('Impossible de sauvegarder la transaction', ToastAndroid.SHORT)
-                }
-            })
+
+            const param = this.getParam()
+
+            if (param.id) {
+                this.state.db.modifyRecord(param.id, data).then(res => {
+                    if (res) {
+                        navigation.goBack()
+                        ToastAndroid.show('Transaction modifié', ToastAndroid.SHORT)
+                    } else {
+                        ToastAndroid.show('Impossible de modifié la transaction', ToastAndroid.SHORT)
+                    }
+                })
+            } else {
+                this.state.db.addRecord(data).then(res => {
+                    if (res) {
+                        navigation.goBack()
+                        ToastAndroid.show('Transaction sauvegardé', ToastAndroid.SHORT)
+                    } else {    
+                        ToastAndroid.show('Impossible de sauvegarder la transaction', ToastAndroid.SHORT)
+                    }
+                })
+            }
+            
             
         } else {
             this.setState({errors: errors});
@@ -172,10 +219,12 @@ class AddRecord extends Component{
                 amount,
                 accounts,
                 date,
+                category,
                 time,
                 errors } = this.state;
 
         const { navigation } = this.props;
+        const { id } = this.getParam();
         return(
             <View style = {styles.container}>
                 <KeyboardAwareScrollView resetScrollToCoords={{ x: 0, y: 0 }} >
@@ -233,13 +282,14 @@ class AddRecord extends Component{
                         <View style = {styles.cutViewPicker}>
                             <ImageLabelPicker
                                 onChangeValue = {this.onChangeCategory}
-                                data = {categoryIcon} 
+                                data = {categoryIcon}
+                                category = {category - 1} 
                             />
                         </View>
                     </View>
                     <View style = {styles.buttonView}>
                         <SimpleButton 
-                            label = "Sauvegarder"
+                            label = {id === null ? 'Sauvegarder' : 'Modifer'}
                             onPress = {this.saveValues}
                         />
                         <LinkButton 
