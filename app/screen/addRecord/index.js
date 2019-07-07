@@ -62,10 +62,10 @@ class AddRecord extends Component{
             if(res !== null) {
                 
                 const account = this.state.accounts.find(account => account.key === res.accountId)
-                console.log(account)
+                console.log(res)
                 this.setState({
                     account: account.name,
-                    type: 'income',
+                    type: res.type,
                     description: res.description,
                     date: res.date,
                     time: res.time,
@@ -176,6 +176,7 @@ class AddRecord extends Component{
         if (okSave) {
             let data = {
                 accountId: account,
+                type: type,
                 amount: parseInt(amount), 
                 description: description, 
                 date: date, 

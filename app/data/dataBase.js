@@ -13,7 +13,7 @@ export default class DataBase {
                 () =>{ }
             ),
             txn.executeSql(
-                'CREATE TABLE IF NOT EXISTS Records(id INTEGER PRIMARY KEY AUTOINCREMENT, accountId INTEGER, amount INTEGER, description TEXT, date VARCHAR(100), time VARCHAR(100), category TEXT, transfert INTEGER, FOREIGN KEY(accountId) REFERENCES Accounts(id))',
+                'CREATE TABLE IF NOT EXISTS Records(id INTEGER PRIMARY KEY AUTOINCREMENT, accountId INTEGER, amount INTEGER, description TEXT, date VARCHAR(100), time VARCHAR(100), category TEXT, transfert INTEGER, type VARCHAR(250), FOREIGN KEY(accountId) REFERENCES Accounts(id))',
                 [],
                 () =>{ }
             ),
@@ -47,7 +47,7 @@ export default class DataBase {
                             }
                         }
                     }, err => console.log(err)),
-                    txn.executeSql('Select id, accountId, amount, description, date, time, category, transfert from Records', [], (tx2, res) => {
+                    txn.executeSql('Select id, accountId, amount, description, date, time, category, transfert, type from Records', [], (tx2, res) => {
                         if (res.rows.length > 0) {
                             for (let e = 0; e < accounts.length; e++) {
                                 
@@ -62,7 +62,8 @@ export default class DataBase {
                                             date: res.rows.item(i).date.toString(), 
                                             time: res.rows.item(i).time.toString(), 
                                             category: res.rows.item(i).category.toString(), 
-                                            transfert: res.rows.item(i).transfert
+                                            transfert: res.rows.item(i).transfert,
+                                            type: res.rows.item(i).type.toString(),
                                         })
                                     }
                                 }
@@ -82,7 +83,7 @@ export default class DataBase {
         return new Promise(
             (resolve, reject) => {
                 this.db.transaction(txn => {
-                    txn.executeSql('Select id, accountId, amount, description, date, time, category, transfert from Records where id = (?)', [id], (tx2, res) => {
+                    txn.executeSql('Select id, accountId, amount, description, date, time, category, transfert, type from Records where id = (?)', [id], (tx2, res) => {
                         if(res.rows.length > 0) {
                             let record = new Record(
                                 res.rows.item(0).id.toString(), 
@@ -92,7 +93,8 @@ export default class DataBase {
                                 res.rows.item(0).date.toString(), 
                                 res.rows.item(0).time.toString(), 
                                 res.rows.item(0).category.toString(), 
-                                res.rows.item(0).transfert
+                                res.rows.item(0).transfert,
+                                res.rows.item(0).type.toString()
                             )
 
                             resolve(record)
@@ -176,8 +178,8 @@ export default class DataBase {
             (resolve, reject) => {
                 console.log(record)
                 this.db.transaction(txn => {
-                    txn.executeSql('Insert Into Records (accountId, amount, description, date, time, category, transfert) values (?, ?, ?, ?, ?, ?, ?)', 
-                        [record.accountId, record.amount, record.description, record.date, record.time, record.category, record.transfert], (tx, res) => {
+                    txn.executeSql('Insert Into Records (accountId, amount, description, date, time, category, transfert, type) values (?, ?, ?, ?, ?, ?, ?, ?)', 
+                        [record.accountId, record.amount, record.description, record.date, record.time, record.category, record.transfert, record.type], (tx, res) => {
                         
                         if (res.rowsAffected > 0) {
                             resolve(true)
@@ -196,8 +198,8 @@ export default class DataBase {
         return new Promise(
             (resolve, reject) => {
                 this.db.transaction(txn => {
-                    txn.executeSql('Update Records Set amount = (?) description = (?), date = (?), time = (?), category = (?), transfert = (?) where id = (?)',
-                                    [record.amount, record.description, record.date, record.time, record.category, record.transfert, id], (tx, res) => {
+                    txn.executeSql('Update Records Set amount = (?) description = (?), date = (?), time = (?), category = (?), transfert = (?), type = (?) where id = (?)',
+                                    [record.amount, record.description, record.date, record.time, record.category, record.transfert, record.type, id], (tx, res) => {
                         if (res.rowsAffected > 0) {
                             resolve(true)
                         } else {

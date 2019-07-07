@@ -49,6 +49,7 @@ class Home extends Component{
                 for (let e = 0; e < array.length; e++) {
                     for (let i = 0; i < array[e].records.length; i++) {
                         let record = array[e].records[i]
+                        console.log(record)
                         allAccount.setRecord({
                             id: record.key, 
                             accountId: record.accountId, 
@@ -57,10 +58,12 @@ class Home extends Component{
                             date: record.date, 
                             time: record.time, 
                             category: record.category, 
-                            transfert: record.transfert
+                            transfert: record.transfert,
+                            type: record.type
                         })    
                     }
                 }
+
                 allAccount.setAmount()
                 array.unshift(allAccount)
                 console.log(allAccount)

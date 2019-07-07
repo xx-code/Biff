@@ -48,7 +48,7 @@ const Record = props => {
                     <Text style = {styles.description}>{description}</Text>
                 </View>
                 <View style = {styles.boxRecordPrice}>
-                    <Text style = {styles.amount}>{`${devise} ${amount}`}</Text>
+                    <Text style = {amount > 0 ? styles.amountIncome : styles.amountDepense }>{`${devise} ${amount}`}</Text>
                     <Text style = {styles.date}>{date}</Text>
                 </View>
             </View>

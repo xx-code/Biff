@@ -47,7 +47,7 @@ const LastRecords = props => {
                                                     category = {item.category}
                                                     description = {item.description}
                                                     devise = {devise}
-                                                    amount = {item.amount}
+                                                    amount = {item.type === 'income' ? item.amount : (-1 * item.amount)}
                                                     date = {item.date}
                                                     showBar = {array.length - 1 === index ? false : true } 
                                                  /> 

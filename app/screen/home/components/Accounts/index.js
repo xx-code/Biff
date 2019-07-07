@@ -34,7 +34,6 @@ class Accounts extends Component{
             data,
             devise,
             loadingHide,
-            onClickAccount,
             addAccount,
             onLongClickAccount } = this.props;
 
@@ -54,6 +53,7 @@ class Accounts extends Component{
                         horizontal = {true}
                         renderItem = {({item}) =>{
                             return <Card
+                                        key = {item.key}
                                         onPress= { () => this.scrollAfterClick(item.key)}
                                         account = {item}
                                         index = {data.indexOf(item)}

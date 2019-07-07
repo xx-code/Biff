@@ -30,8 +30,13 @@ const styles = StyleSheet.create({
     boxRecordPrice: {
         
     },
-    amount: {
+    amountIncome: {
         color: PRIMARY_COLOR,
+        fontSize: 16,
+        marginBottom: 6
+    },
+    amountDepense: {
+        color: '#ed3b38',
         fontSize: 16,
         marginBottom: 6
     },
