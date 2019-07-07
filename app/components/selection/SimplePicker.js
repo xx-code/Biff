@@ -28,6 +28,7 @@ const Item = props => {
  * @param onChangeValue function(value)
  * @param data array of object {name: string key: string}
  * @param label string
+ * @param disable boolean
  */
 class SimplePicker extends Component {
 
@@ -47,19 +48,22 @@ class SimplePicker extends Component {
                 hideSelection } = this.state;
         const { style,
                 data,
-                label} = this.props;
+                label,
+                disable } = this.props;
 
         return(
             <View style = {style}>
                 <Text style = {styles.labelPicker}>{label}</Text>
-                <View style = {styles.selectedPicker}>
+                <View  style = {styles.selectedPicker}>
                     <Text style = {styles.textSelectSimplePicker}>{selected}</Text>
-                    <IconButton
-                        icon = "md-arrow-dropdown"
-                        size = {28}
-                        onPress = { () => this.setState(prevState => ({hideSelection: !prevState.hideSelection}))}
-                        color = {SECONDARY_COLOR_HIGHT} 
-                    />
+                    <HideView hide = {disable}>
+                        <IconButton
+                            icon = "md-arrow-dropdown"
+                            size = {28}
+                            onPress = { () => this.setState(prevState => ({hideSelection: !prevState.hideSelection}))}
+                            color = {SECONDARY_COLOR_HIGHT} 
+                        />
+                    </HideView>   
                 </View>
                 
                 <View style = {styles.simplePickerUnderLine}></View>

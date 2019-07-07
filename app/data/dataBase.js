@@ -198,7 +198,9 @@ export default class DataBase {
         return new Promise(
             (resolve, reject) => {
                 this.db.transaction(txn => {
-                    txn.executeSql('Update Records Set amount = (?) description = (?), date = (?), time = (?), category = (?), transfert = (?), type = (?) where id = (?)',
+                    console.log("id: " + id )
+                    console.log(record)
+                    txn.executeSql('Update Records Set amount = (?), description = (?), date = (?), time = (?), category = (?), transfert = (?), type = (?) where id = (?)',
                                     [record.amount, record.description, record.date, record.time, record.category, record.transfert, record.type, id], (tx, res) => {
                         if (res.rowsAffected > 0) {
                             resolve(true)

@@ -62,9 +62,8 @@ class AddRecord extends Component{
             if(res !== null) {
                 
                 const account = this.state.accounts.find(account => account.key === res.accountId)
-                console.log(res)
+                console.log(account)
                 this.setState({
-                    account: account.name,
                     type: res.type,
                     description: res.description,
                     date: res.date,
@@ -72,6 +71,11 @@ class AddRecord extends Component{
                     amount: res.amount.toString(),
                     category: parseInt(res.category)
                 })
+
+                this._selectAccount.onClickItem(account.key, account.name)
+
+                this._selectSingle.onChangeValue(res.type, res.type === 'income' ? 0 : 1)
+
             } else {
                 ToastAndroid.show("Errors transaction n'existe pas", ToastAndroid.LONG)
                 this.props.navigation.goBack()
@@ -231,6 +235,7 @@ class AddRecord extends Component{
                 <KeyboardAwareScrollView resetScrollToCoords={{ x: 0, y: 0 }} >
                     <View style = {styles.inpView}>
                         <SingleSelect
+                            ref = { c => this._selectSingle = c }                            
                             label1= "Revenu"
                             label2= "Dépense"
                             value1= "income"
@@ -239,6 +244,8 @@ class AddRecord extends Component{
                         />
                         <View style = {styles.cutView}>
                             <SimplePicker
+                                ref = { c => this._selectAccount = c }
+                                disable = {id === null ? false : true}
                                 label = "Compte"
                                 onChangeValue = {this.onChangeValueAccount}
                                 data = {accounts} 
