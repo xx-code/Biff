@@ -29,6 +29,7 @@ const Item = props => {
  * @param data array of object {name: string key: string}
  * @param label string
  * @param disable boolean
+ * @param name string
  */
 class SimplePicker extends Component {
 
@@ -39,7 +40,8 @@ class SimplePicker extends Component {
 
     onClickItem = (value, label) => {
         this.setState({selected: label, hideSelection: true});
-        this.props.onChangeValue(value);
+        const { name } = this.props;
+        this.props.onChangeValue(value, name);
     }
 
     render(){
@@ -75,6 +77,7 @@ class SimplePicker extends Component {
                         keyExtractor = {(item, value) => item.key}
                         showsVerticalScrollIndicator = {false}
                         renderItem = {({item, index}) => <Item 
+                                                            key = {item.key}
                                                             label = {item.name}
                                                             onPress = {() => this.onClickItem(item.key, item.name)} 
                                                          />

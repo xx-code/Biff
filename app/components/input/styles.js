@@ -1,7 +1,8 @@
 import { StyleSheet } from 'react-native';
 import { PRIMARY_COLOR, 
          SECONDARY_COLOR_HIGHT, 
-         ALERT_COLOR} from '../../config/colors';
+         ALERT_COLOR,
+         RED_COLOR} from '../../config/colors';
 
 const Styles = StyleSheet.create({
     labelHigh : {
@@ -29,7 +30,7 @@ const Styles = StyleSheet.create({
     },
     errors: {
         fontSize: 14,
-        color: '#ed1c24'
+        color: RED_COLOR
     }
 })
 

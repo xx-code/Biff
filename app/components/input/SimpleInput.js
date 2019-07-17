@@ -14,6 +14,7 @@ import { SECONDARY_COLOR_HIGHT, PRIMARY_COLOR } from '../../config/colors';
  * @param label string
  * @param name string 
  * @param keyboardType value
+ * @param error string
  */
 class SimpleInput extends Component {
 

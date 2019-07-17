@@ -13,14 +13,17 @@ export default class Record {
         this.time = time;
         this.category = category;
         this.type = type
+        this.transfert = null;
 
         if (typeof(transfert) === Boolean)
         {
             this.transfert = transfert ? 0 : 1;
         }
-        else if (typeof(transfert) === Int32Array) {
+        else {
             this.transfert = transfert == 0 ? true : false
         }
+
+        console.log(this.transfert)
     }
 
 }

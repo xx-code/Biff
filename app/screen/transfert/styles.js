@@ -1,5 +1,6 @@
 import { StyleSheet } from 'react-native';
-import { SECONDARY_COLOR_LIGHT } from '../../config/colors';
+import { SECONDARY_COLOR_LIGHT,
+         RED_COLOR } from '../../config/colors';
 
 const Styles = StyleSheet.create({
     container: {
@@ -32,6 +33,10 @@ const Styles = StyleSheet.create({
     },
     inputDate: {
         flex: 1
+    },
+    errors: {
+        fontSize: 14,
+        color: RED_COLOR
     }
 })
 

@@ -14,6 +14,7 @@ import { SECONDARY_COLOR_HIGHT } from '../../config/colors';
  * @param value string
  * @param label string
  * @param name string 
+ * @param error string
  */
 const SimpleInputPosAction = props => {
 

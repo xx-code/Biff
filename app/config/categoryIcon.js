@@ -41,6 +41,12 @@ const categoryIcon = [
         icon: 'car',
         key: '7',
         color: '#00337b'
+    },
+    {
+        label: 'Transfert',
+        icon: 'exchange-alt',
+        key: '8',
+        color: '#405f7a'
     }
 ]
      

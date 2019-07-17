@@ -11,6 +11,8 @@ const ALERT_COLOR = '#E74C3C';
 const TEXT_PRIMARY_COLOR = '#3E3E3E';
 const TEXT_SECONDARY_COLOR = 'rgba(163, 162, 172, 0.71)';
 
+const RED_COLOR = '#ed3b38';
+
 const TRANSPARENT = 'rgba(0, 0, 0, 0.4)';
 
 export {
@@ -23,5 +25,6 @@ export {
     ALERT_COLOR,
     TRANSPARENT,
     TEXT_PRIMARY_COLOR,
-    TEXT_SECONDARY_COLOR
+    TEXT_SECONDARY_COLOR,
+    RED_COLOR
 }

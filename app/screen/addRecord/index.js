@@ -15,6 +15,7 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import styles from './styles';
 import categoryIcon from '../../config/categoryIcon';
 import DataBase from '../../data/dataBase';
+import { HideView } from '../../components/view';
 
 class AddRecord extends Component{
     static navigationOptions = {
@@ -300,11 +301,14 @@ class AddRecord extends Component{
                             label = {id === null ? 'Sauvegarder' : 'Modifer'}
                             onPress = {this.saveValues}
                         />
-                        <LinkButton 
-                            label = "Transfère"
-                            fontSize = {18}
-                            onPress = {() => navigation.navigate('Transfert')}
-                        />
+                        <HideView hide = {id === null ? false : true} >
+                            <LinkButton 
+                                label = "Transfère"
+                                fontSize = {18}
+                                onPress = {() => navigation.navigate('Transfert')}
+                            />
+                        </HideView>
+                        
                     </View>
                 </KeyboardAwareScrollView>
             </View>

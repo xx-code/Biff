@@ -2,7 +2,8 @@ import { StyleSheet } from 'react-native';
 import { TEXT_PRIMARY_COLOR, 
          TEXT_SECONDARY_COLOR, 
          PRIMARY_COLOR,
-         SECONDARY_COLOR_LIGHT} from '../../../../config/colors';
+         SECONDARY_COLOR_LIGHT,
+         RED_COLOR} from '../../../../config/colors';
 
 const styles = StyleSheet.create({
     record: {
@@ -36,7 +37,7 @@ const styles = StyleSheet.create({
         marginBottom: 6
     },
     amountDepense: {
-        color: '#ed3b38',
+        color: RED_COLOR,
         fontSize: 16,
         marginBottom: 6
     },

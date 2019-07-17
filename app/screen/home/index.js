@@ -156,10 +156,15 @@ class Home extends Component{
         this.setState({account: accountSelected, accounts: newAccounts})
     }
 
-    onClickRecord = id => {
-        this.props.navigation.navigate('AddRecord', {
+    onClickRecord = (id, transfert) => {
+        let  screen = 'AddRecord';
+        if (!transfert) {
+           screen = 'Transfert';
+        }
+
+        this.props.navigation.navigate(screen, {
             idRecord: id
-        })
+        }) 
     }
 
     render(){
