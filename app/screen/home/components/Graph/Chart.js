@@ -22,7 +22,7 @@ const Chart = props => {
                 value,
                 svg: {
                     fill: randomColor(),
-                    onPress: () => console.log('press', index),
+                    onPress: () => console.warn('press', index),
                 },
                 key: `pie-${index}`,
             }));

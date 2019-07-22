@@ -16,6 +16,7 @@ import styles from './styles';
 import categoryIcon from '../../config/categoryIcon';
 import DataBase from '../../data/dataBase';
 import { HideView } from '../../components/view';
+import { LoadingPage } from '../../components/loading';
 
 class AddRecord extends Component{
     static navigationOptions = {
@@ -32,6 +33,7 @@ class AddRecord extends Component{
         amount: '0',
         category: 1,
         errors: {},
+        loading: false,
         db: new DataBase()
     }
 
@@ -42,9 +44,11 @@ class AddRecord extends Component{
     }
 
     componentDidMount(){
+        console.log(this.getParam())
         this.fetchAccount()
-        const param = this.getParam()         
-        console.log(param)
+        const param = this.getParam() 
+        const {navigation} = this.props        
+        //(param)
         if (param.id !== null) {
             this.fetchRecord(param.id)
         }
@@ -63,7 +67,7 @@ class AddRecord extends Component{
             if(res !== null) {
                 
                 const account = this.state.accounts.find(account => account.key === res.accountId)
-                console.log(account)
+                //(account)
                 this.setState({
                     type: res.type,
                     description: res.description,
@@ -179,6 +183,7 @@ class AddRecord extends Component{
         }
 
         if (okSave) {
+            this.setState({loading : true})
             let data = {
                 accountId: account,
                 type: type,
@@ -194,7 +199,9 @@ class AddRecord extends Component{
 
             if (param.id) {
                 this.state.db.modifyRecord(param.id, data).then(res => {
+                    this.setState({loading : false})
                     if (res) {
+                        
                         navigation.goBack()
                         ToastAndroid.show('Transaction modifié', ToastAndroid.SHORT)
                     } else {
@@ -203,6 +210,7 @@ class AddRecord extends Component{
                 })
             } else {
                 this.state.db.addRecord(data).then(res => {
+                    this.setState({loading : false})
                     if (res) {
                         navigation.goBack()
                         ToastAndroid.show('Transaction sauvegardé', ToastAndroid.SHORT)
@@ -214,7 +222,7 @@ class AddRecord extends Component{
             
             
         } else {
-            this.setState({errors: errors});
+            this.setState({errors: errors, loading: false});
         }
 
     }
@@ -226,6 +234,7 @@ class AddRecord extends Component{
                 accounts,
                 date,
                 category,
+                loading,
                 time,
                 errors } = this.state;
 
@@ -311,6 +320,7 @@ class AddRecord extends Component{
                         
                     </View>
                 </KeyboardAwareScrollView>
+                <LoadingPage show = {loading} />
             </View>
         )
     }

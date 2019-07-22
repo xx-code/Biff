@@ -12,6 +12,7 @@ import { SimplePicker,
          SingleSelect } from '../../components/selection';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import DataBase from '../../data/dataBase';
+import { LoadingPage } from '../../components/loading';
 import styles from './styles';
 
 class AddRecord extends Component{
@@ -27,8 +28,16 @@ class AddRecord extends Component{
         date: '',
         time: '',
         amount: '',
+        loading: false,
+        oldAmount: 0,
         errors: {},
         db: new DataBase()
+    }
+
+    getParam = () => {
+        const { navigation } = this.props;
+        const id = navigation.getParam('idRecord', null)
+        return ({id: id})
     }
 
     componentDidMount() {
@@ -48,27 +57,30 @@ class AddRecord extends Component{
     }
 
     fetchRecord = (id) => {
-        /**gerre l
-         * merde visualistion 
-         */
+
         this.state.db.getRecord(id).then(res => {
             if(res !== null) {
+
+                let accountKey  = res.type === 'income' ? (res.accountId - 1) : parseInt(res.accountId);
+
+                console.log(accountKey)
                 
-                const account = this.state.accounts.find(account => account.key === res.accountId)
-                console.log(account)
+                const accountFrom = this.state.accounts.find(account => account.key === accountKey.toString())
+                const accountTo = this.state.accounts.find(account => account.key  === (accountKey + 1).toString())
+                //(account)
                 this.setState({
                     type: res.type,
                     description: res.description,
                     date: res.date,
+                    accountTo: accountTo,
+                    accountFrom: accountFrom,
                     time: res.time,
-                    amount: res.amount.toString(),
-                    category: parseInt(res.category)
+                    oldAmount: res.amount,
+                    amount: res.amount.toString()
                 })
-
-                this._selectAccount.onClickItem(account.key, account.name)
-
-                this._selectSingle.onChangeValue(res.type, res.type === 'income' ? 0 : 1)
-
+                this._selectAccountFrom.onClickItem(accountFrom.key, accountFrom.name)
+                this._selectAccountTo.onClickItem(accountTo.key, accountTo.name)
+                
             } else {
                 ToastAndroid.show("Errors transaction n'existe pas", ToastAndroid.LONG)
                 this.props.navigation.goBack()
@@ -128,13 +140,12 @@ class AddRecord extends Component{
                 accountFrom, 
                 date,
                 accounts,
+                oldAmount,
                 time,
                 amount
                 } = this.state;
         
         const { navigation } = this.props;
-
-        console.log(this.state)
 
         let okSave = true;
         let errors = {}
@@ -168,7 +179,7 @@ class AddRecord extends Component{
 
         if (accountFrom !== null) {
 
-            if ( parseInt(amount) > accounts[parseInt(accountFrom)].amount) {
+            if ( parseInt(amount) > (accounts.find(account => account.key === accountFrom).amount + oldAmount)) {
                 okSave = false;
                 errors.amount = 'Entrer une somme minimum ou equal au montant total du compte';
             } else {
@@ -191,6 +202,7 @@ class AddRecord extends Component{
         }
 
         if (okSave) {
+            this.setState({loading: true})
             let dataTo = {
                 accountId: accountTo,
                 type: 'income',
@@ -213,23 +225,33 @@ class AddRecord extends Component{
                 transfert: 0 
             }
 
-            console.log(dataFrom)
+            //(dataFrom)
 
-           /* const param = this.getParam()
+            const param = this.getParam()
+        
 
-            if (param.id) {
-                this.state.db.modifyRecord(param.id, data).then(res => {
+           if (param.id) {
+                this.state.db.modifyRecord(param.id, dataFrom).then(res => {
                     if (res) {
-                        navigation.goBack()
-                        ToastAndroid.show('Transaction modifié', ToastAndroid.SHORT)
+                        this.state.db.modifyRecord((parseInt(param.id) + 1).toString(), dataTo).then(res => {
+                            this.setState({loading: false})
+                            if (res) {
+                                navigation.goBack()
+                                ToastAndroid.show('Transaction modifié', ToastAndroid.SHORT)
+                            } else {    
+                                ToastAndroid.show('Impossible de modifier la transaction', ToastAndroid.SHORT)
+                            }
+                        })
                     } else {
-                        ToastAndroid.show('Impossible de modifié la transaction', ToastAndroid.SHORT)
+                        this.setState({loading: false})
+                        ToastAndroid.show('Impossible de modifié', ToastAndroid.SHORT)
                     }
                 })
-            } else {*/
+            } else {
                 this.state.db.addRecord(dataFrom).then(res => {
                     if (res) {
                         this.state.db.addRecord(dataTo).then(res => {
+                            this.setState({loading: false})
                             if (res) {
                                 navigation.goBack()
                                 ToastAndroid.show('Transaction sauvegardé', ToastAndroid.SHORT)
@@ -237,16 +259,18 @@ class AddRecord extends Component{
                                 ToastAndroid.show('Impossible de sauvegarder la transaction', ToastAndroid.SHORT)
                             }
                         })
-                    } else {    
+                    } else {
+                        this.setState({loading: false})    
                         ToastAndroid.show('Transfer impossible', ToastAndroid.SHORT)
                     }
                 })
-            //}
+            }
             
             
         } else {
-            this.setState({errors: errors});
+            this.setState({errors: errors, loading: false});
         }
+        
         
     }
 
@@ -257,7 +281,10 @@ class AddRecord extends Component{
                 accounts,
                 date,
                 time,
+                loading,
                 errors } = this.state;
+
+                const {id} = this.getParam();
 
         return(
             <View style = {styles.container}>
@@ -265,13 +292,16 @@ class AddRecord extends Component{
                     <View style = {styles.inpView}>
                         <View style = {styles.cutView}>
                             <SimplePicker
+                                ref = { c => this._selectAccountFrom = c }
                                 label = "Depuis Compte"
                                 onChangeValue = {this.onChangeValueAccount}
                                 name = "accountFrom"
                                 data = {accounts} 
+                                disable =  {id === null ? false : true}
                             />
                             <Text style = {styles.errors}>{errors.accountFrom}</Text>
                             <SimplePicker
+                                ref = { c => this._selectAccountTo = c }
                                 label = "Vers Compte"
                                 onChangeValue = {this.onChangeValueAccount}
                                 name = "accountTo"
@@ -311,11 +341,12 @@ class AddRecord extends Component{
                     </View>
                     <View style = {styles.buttonView}>
                         <SimpleButton 
-                            label = "Sauvegarder"
+                            label = {id === null ? 'Sauvegarder' : 'Modifer'}
                             onPress = {this.saveValue}
                         />
                     </View>
                 </KeyboardAwareScrollView>
+                <LoadingPage show = {loading} /> 
             </View>
         )
     }

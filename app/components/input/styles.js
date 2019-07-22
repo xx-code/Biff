@@ -2,6 +2,7 @@ import { StyleSheet } from 'react-native';
 import { PRIMARY_COLOR, 
          SECONDARY_COLOR_HIGHT, 
          ALERT_COLOR,
+         TEXT_PRIMARY_COLOR,
          RED_COLOR} from '../../config/colors';
 
 const Styles = StyleSheet.create({
@@ -26,7 +27,8 @@ const Styles = StyleSheet.create({
         color: SECONDARY_COLOR_HIGHT
     },
     simpleInputField: {
-        paddingLeft: 5
+        paddingLeft: 5,
+        color: TEXT_PRIMARY_COLOR
     },
     errors: {
         fontSize: 14,

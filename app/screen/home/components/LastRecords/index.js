@@ -29,6 +29,8 @@ const LastRecords = props => {
 
     const array = splitArray(data)
 
+    console.log(array)
+
     return(
         <View style = {[style, styles.lastRecords]}>
             <View style = {styles.title}>

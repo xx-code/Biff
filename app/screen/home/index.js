@@ -31,14 +31,22 @@ class Home extends Component{
 
     componentDidMount(){
         SplashScreen.hide();
-        this.fetchAllAccount()
+        const { navigation } = this.props
+        this.focusListener = navigation.addListener('didFocus', () => {
+            this.fetchAllAccount()
+        });
     }
+
+    componentWillUnmount() {
+        // Remove the event listener before removing the screen from the stack
+        this.focusListener.remove();
+    }
+
 
     fetchAllAccount = async () => {
         this.setState({loadingAccountsHide: false})
         this.state.db.getAccounts().then(res => {
             let array = res;
-            
 
             if (res.length >= 1) {
                 let allAccount = new Account(
@@ -49,7 +57,6 @@ class Home extends Component{
                 for (let e = 0; e < array.length; e++) {
                     for (let i = 0; i < array[e].records.length; i++) {
                         let record = array[e].records[i]
-                        console.log(record)
                         allAccount.setRecord({
                             id: record.key, 
                             accountId: record.accountId, 
@@ -66,7 +73,7 @@ class Home extends Component{
 
                 allAccount.setAmount()
                 array.unshift(allAccount)
-                console.log(allAccount)
+                //(allAccount)
             }
             
             let account = res.length >= 1 ? array[0] : new Account("null", "any", "#000")
@@ -123,7 +130,7 @@ class Home extends Component{
     }
 
     deleteAccount = (id) => {
-        console.log(id)
+        //(id)
         this.state.db.deleteAccount(id).then(res => {
             if (res) 
             { 
@@ -158,7 +165,7 @@ class Home extends Component{
 
     onClickRecord = (id, transfert) => {
         let  screen = 'AddRecord';
-        if (!transfert) {
+        if (transfert) {
            screen = 'Transfert';
         }
 

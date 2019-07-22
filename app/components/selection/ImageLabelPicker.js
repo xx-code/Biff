@@ -41,16 +41,20 @@ class ImageLabelPicker extends Component {
 
     componentDidMount () {
         const {data, category} = this.props;
-        this.onClickItem(data[category].key, data[category].label, data[category].icon, data[category].color)
+        const cat = data[category];
+
+        this.setState({icon: cat.icon,  color: cat.color})
+        this.onClickItem(cat.key, cat.label, cat.icon, cat.color)
+
     }
 
-    /*componentWillReceiveProps(nextProps) {
-        if (nextProps.category) {
+    UNSAFE_componentWillReceiveProps(nextProps) {
+        if (nextProps.category != this.props.category) {
             const {data, category} = nextProps
-            console.log(nextProps)
+            //(nextProps)
             this.onClickItem(data[category].key, data[category].label, data[category].icon, data[category].color)
         }
-    }*/
+    }
 
     onClickItem = (key, label, icon, color) => {
         this.setState({selected: label, hideSelection: true, icon: icon, color: color});

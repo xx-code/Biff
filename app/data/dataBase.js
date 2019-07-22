@@ -52,7 +52,7 @@ export default class DataBase {
                             for (let e = 0; e < accounts.length; e++) {
                                 
                                 for (let i = 0; i < res.rows.length; i++) { 
-                                    console.log(res.rows.item(i).accountId.toString())
+                                    //(res.rows.item(i).accountId.toString())
                                     if (accounts[e].key === res.rows.item(i).accountId.toString()) {
                                         accounts[e].setRecord({
                                             id: res.rows.item(i).id.toString(), 
@@ -133,7 +133,7 @@ export default class DataBase {
             (resolve, reject) => {
                 this.db.transaction(txn => {
                     txn.executeSql('Delete from Records where accountId = (?)', [id], (tx, res) => {
-                        console.log(res)
+                        //(res)
                         tx.executeSql('Delete from Accounts where id = (?)', [id], (tx2, res) => {
                             if (res.rowsAffected > 0) {
                                 resolve(true)
@@ -141,7 +141,7 @@ export default class DataBase {
                                 resolve(false)
                             } 
                         }, err => {
-                            console.log(err)
+                            //(err)
                             resolve(false)
                         })
                     },
@@ -165,7 +165,7 @@ export default class DataBase {
                             resolve(false)
                         }
                     }, err => {
-                        console.log(err)
+                        //(err)
                         resolve(false)
                     })
                 })
@@ -176,7 +176,7 @@ export default class DataBase {
     addRecord = (record) => {
         return new Promise(
             (resolve, reject) => {
-                console.log(record)
+                //(record)
                 this.db.transaction(txn => {
                     txn.executeSql('Insert Into Records (accountId, amount, description, date, time, category, transfert, type) values (?, ?, ?, ?, ?, ?, ?, ?)', 
                         [record.accountId, record.amount, record.description, record.date, record.time, record.category, record.transfert, record.type], (tx, res) => {
@@ -198,8 +198,8 @@ export default class DataBase {
         return new Promise(
             (resolve, reject) => {
                 this.db.transaction(txn => {
-                    console.log("id: " + id )
-                    console.log(record)
+                    //("id: " + id )
+                    //(record)
                     txn.executeSql('Update Records Set amount = (?), description = (?), date = (?), time = (?), category = (?), transfert = (?), type = (?) where id = (?)',
                                     [record.amount, record.description, record.date, record.time, record.category, record.transfert, record.type, id], (tx, res) => {
                         if (res.rowsAffected > 0) {
@@ -227,7 +227,7 @@ export default class DataBase {
                             resolve(false)
                         }
                     }, err => {
-                        console.log(err)
+                        //(err)
                         resolve(false)
                     })
                 })
