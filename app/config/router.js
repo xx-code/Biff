@@ -11,6 +11,7 @@ import Goals from '../screen/goals';
 import Budget from '../screen/budget';
 import AddRecord from '../screen/addRecord';
 import Transfert from '../screen/transfert';
+import AllRecords from '../screen/allRecords';
 import firebase from 'react-native-firebase';
 import Profile from '../components/profile';
 import { SECONDARY_COLOR_LIGHT, SECONDARY_COLOR, PRIMARY_COLOR } from './colors';
@@ -108,6 +109,16 @@ const AppNavigator = createSwitchNavigator(
             },
             Transfert: {
                 screen: Transfert,
+                navigationOptions: {
+                    headerStyle: {
+                        backgroundColor: PRIMARY_COLOR,
+                        elevation: 0
+                    },
+                    headerTintColor: SECONDARY_COLOR_LIGHT
+                }
+            },
+            AllRecords: {
+                screen: AllRecords,
                 navigationOptions: {
                     headerStyle: {
                         backgroundColor: PRIMARY_COLOR,

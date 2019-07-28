@@ -70,6 +70,10 @@ const styles = StyleSheet.create({
     },
     icon: {
         marginRight: 8
+    },
+    textChangeSelect: {
+        fontSize: 20,
+        paddingHorizontal: 10
     }
 })
 

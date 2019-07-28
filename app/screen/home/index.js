@@ -208,7 +208,7 @@ class Home extends Component{
                         data = {account.records}
                         devise = "FCFA"
                         handleClickItem = {this.onClickRecord}
-                        handleClickMore = {() => {}}
+                        handleClickMore = {() => navigation.navigate('AllRecords')}
                     />
 
                     <Graph
