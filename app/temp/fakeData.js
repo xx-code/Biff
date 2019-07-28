@@ -33,7 +33,7 @@ const records = [
         amount: 1200,
         date: '12/02/2019',
         time: '15:20',
-        category: 'Nourriture ou Boisson',
+        category: '1',
         transfert: false
     },
     {
@@ -42,7 +42,7 @@ const records = [
         amount: 1200,
         date: '12/02/2019',
         time: '15:20',
-        category: 'Nourriture ou Boisson',
+        category: '1',
         transfert: false
     },
     {
@@ -51,7 +51,7 @@ const records = [
         amount: 1200,
         date: '12/02/2019',
         time: '15:20',
-        category: 'Nourriture ou Boisson',
+        category: '1',
         transfert: false
     },
     {
@@ -60,7 +60,7 @@ const records = [
         amount: 1200,
         date: '12/02/2019',
         time: '15:20',
-        category: 'Nourriture ou Boisson',
+        category: '1',
         transfert: false
     },
     {
@@ -69,7 +69,7 @@ const records = [
         amount: 1200,
         date: '12/02/2019',
         time: '15:20',
-        category: 'Nourriture ou Boisson',
+        category: '1',
         transfert: false
     },
     {
@@ -78,7 +78,7 @@ const records = [
         amount: 1200,
         date: '12/02/2019',
         time: '15:20',
-        category: 'Nourriture ou Boisson',
+        category: '1',
         transfert: false
     },
     {
@@ -87,7 +87,7 @@ const records = [
         amount: 1200,
         date: '12/02/2019',
         time: '15:20',
-        category: 'Nourriture ou Boisson',
+        category: '1',
         transfert: false
     }
 ]

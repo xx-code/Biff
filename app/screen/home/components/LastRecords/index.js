@@ -3,7 +3,7 @@ import { View,
          Text,
          FlatList } from 'react-native';
 import { LinkButton } from '../../../../components/button';
-import Record from './record';
+import { Record } from '../../../../components/common';
 import styles from './styles';
 
 

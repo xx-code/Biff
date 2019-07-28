@@ -3,6 +3,8 @@ import { View,
          Text } from 'react-native';
 import { ChangeSelect } from '../../components/selection';
 import { LinkButton } from '../../components/button';
+import Records from './components/Records';
+import { records } from '../../temp/fakeData';
 import styles from './styles';
 import { SECONDARY_COLOR_LIGHT } from '../../config/colors';
 
@@ -19,7 +21,7 @@ class AllRecords extends Component {
                 <View style = {styles.navBalance}>
                     <ChangeSelect
                         color = {SECONDARY_COLOR_LIGHT}
-                        data = { ['Ce Jour', 'Cette Semaine', 'Ce mois', 'Cet année'] }
+                        data = { ['Jour', 'Semaine', 'mois', 'année'] }
                     />
                     <View style = {styles.balance}>
                         <Text style = {styles.textBalance}>Balance: </Text>
@@ -30,10 +32,18 @@ class AllRecords extends Component {
                 <View style = {styles.navFilter}>
                     <LinkButton
                         onPress = {() => {}}
-                        label = 'filtre option'
+                        label = 'Filtre Option'
                         size = {14} 
                     />
-                </View> 
+                </View>
+                <View>
+                    <Records
+                         title = '01/05 - 06/01'
+                         data = {records}
+                         devise = 'FCFA'
+                         handleClickItem = {() => {}}
+                    />
+                </View>
             </View>
         )
     }
