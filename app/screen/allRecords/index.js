@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { View,
          Text } from 'react-native';
 import { ChangeSelect } from '../../components/selection';
+import { LinkButton } from '../../components/button';
 import styles from './styles';
 import { SECONDARY_COLOR_LIGHT } from '../../config/colors';
 
@@ -25,6 +26,13 @@ class AllRecords extends Component {
                         <Text style = {styles.textBalance}>4000</Text>
                         <Text style = {styles.textBalance}> CFA</Text>
                     </View>
+                </View>
+                <View style = {styles.navFilter}>
+                    <LinkButton
+                        onPress = {() => {}}
+                        label = 'filtre option'
+                        size = {14} 
+                    />
                 </View> 
             </View>
         )

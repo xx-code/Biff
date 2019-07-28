@@ -20,6 +20,12 @@ const styles = StyleSheet.create({
     },
     textBalance: {
         color: SECONDARY_COLOR_LIGHT
+    },
+    navFilter: {
+        backgroundColor: SECONDARY_COLOR_LIGHT,
+        flexDirection: 'row-reverse',
+        paddingHorizontal: 17,
+        paddingVertical: 14
     }
 })
 
