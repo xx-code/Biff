@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { PRIMARY_COLOR } from '../../../../config/colors';
+import { PRIMARY_COLOR } from '../../config/colors';
 
 const styles = StyleSheet.create({
     navBalance : {

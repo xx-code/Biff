@@ -22,13 +22,17 @@ class ChangeSelect extends Component {
 
     onClickArrow = (click) => {
 
-        const { selected, data } = this.props;
+        const { selected, data } = this.state;
+
+        let select = selected;
 
         if (click === 'right') {
-            this.setState({selected: selected === (data.size - 1) ?  0 : selected++})
+            select = selected === (data.length - 1) ?  0 : select + 1 ;
         } else {
-            this.setState({selected: selected === 0 ? (data.size - 1) : selected--})
+            select = selected === 0 ? (data.length - 1) : select - 1;
         }
+
+        this.setState({selected: select})
     }
 
     render() {
@@ -39,7 +43,7 @@ class ChangeSelect extends Component {
                 data } = this.state;
 
         return (
-            <View style = {style}>
+            <View style = {[style, styles.changeSelect]}>
                 <IconButton
                     onPress = { () => this.onClickArrow('left')}
                     icon = "md-arrow-dropleft"

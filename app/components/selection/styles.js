@@ -74,6 +74,10 @@ const styles = StyleSheet.create({
     textChangeSelect: {
         fontSize: 20,
         paddingHorizontal: 10
+    },
+    changeSelect: {
+        flexDirection: 'row',
+        alignItems: 'center'
     }
 })
 
