@@ -30,6 +30,7 @@ export default class DataBase {
         })
     }
 
+    // get each acconts with all records of that
     getAccounts = () => {
         return new Promise(
             (resolve, reject) => {
@@ -79,6 +80,7 @@ export default class DataBase {
         )
     }
 
+    // get record by id 
     getRecord = (id) => {
         return new Promise(
             (resolve, reject) => {
@@ -101,12 +103,73 @@ export default class DataBase {
                         } else {
                             resolve(null)
                         }
-                    })
+                    }, err => console.log(err))
                 })
             }
         )
     }
 
+    // get records buy account id
+    getRecordsBuyAccount = (idAccount) => {
+        return new Promise(
+            (resolve, reject) => {
+                const records = [];
+                this.db.transaction(txn => {
+                    txn.executeSql('Select id, accountId, amount, description, date, time, category, transfert, type from Records where accountId = (?)', [idAccount], (tx2, res) => {
+                        if(res.rows.length > 0) {
+                            for (let i = 0; i < res.rows.length; i++) { 
+                                let record = new Record(
+                                    res.rows.item(i).id.toString(), 
+                                    res.rows.item(i).accountId.toString(), 
+                                    res.rows.item(i).amount, 
+                                    res.rows.item(i).description.toString(), 
+                                    res.rows.item(i).date.toString(), 
+                                    res.rows.item(i).time.toString(), 
+                                    res.rows.item(i).category.toString(), 
+                                    res.rows.item(i).transfert,
+                                    res.rows.item(i).type.toString()
+                                )
+                                records.unshift(record)
+                            }
+                        }
+                        resolve(records)
+                    }, err => console.log(err))
+                })
+            }
+        )
+    }
+
+    // get all records
+    getAllRecords = () => {
+        return new Promise(
+            (resolve, reject) => {
+                const records = [];
+                this.db.transaction(txn => {
+                    txn.executeSql('Select id, accountId, amount, description, date, time, category, transfert, type from Records', [], (tx2, res) => {
+                        if (res.rows.length > 0) {
+                            for (let i = 0; i < res.rows.length; i++) {
+                                let record = new Record(
+                                    res.rows.item(i).id.toString(), 
+                                    res.rows.item(i).accountId.toString(), 
+                                    res.rows.item(i).amount, 
+                                    res.rows.item(i).description.toString(), 
+                                    res.rows.item(i).date.toString(), 
+                                    res.rows.item(i).time.toString(), 
+                                    res.rows.item(i).category.toString(), 
+                                    res.rows.item(i).transfert,
+                                    res.rows.item(i).type.toString()
+                                )
+                                records.unshift(record)
+                            }
+                            resolve(records)
+                        }
+                    }, err => console.log(err))
+                })
+            }
+        )
+    }
+
+    // set account
     setAccount = (account) => {
         return new Promise(
             (resolve, reject) => {
@@ -128,6 +191,7 @@ export default class DataBase {
         )
     }
 
+    // delete account
     deleteAccount = (id) => {
         return new Promise(
             (resolve, reject) => {
@@ -154,6 +218,7 @@ export default class DataBase {
         )
     }
 
+    // modify account
     modifyAccount = (id, account) => {
         return new Promise(
             (resolve, reject) => {
@@ -173,6 +238,7 @@ export default class DataBase {
         )
     }
 
+    /// add record
     addRecord = (record) => {
         return new Promise(
             (resolve, reject) => {
@@ -194,6 +260,7 @@ export default class DataBase {
         )
     }
 
+    // modify record
     modifyRecord = (id, record) => {
         return new Promise(
             (resolve, reject) => {
@@ -216,6 +283,7 @@ export default class DataBase {
         )
     }
 
+    // delete record
     deleteRecord = (id) => {
         return new Promise(
             (resolve, reject) => {

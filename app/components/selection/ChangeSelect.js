@@ -33,6 +33,7 @@ class ChangeSelect extends Component {
         }
 
         this.setState({selected: select})
+        this.props.onClick(select)
     }
 
     render() {

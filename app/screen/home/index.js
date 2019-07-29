@@ -8,6 +8,7 @@ import TotalAmount from './components/TotalAmount';
 import Accounts from './components/Accounts';
 import LastRecords from './components/LastRecords'
 import { records, stat } from '../../temp/fakeData';
+import moment from 'moment'
 import Swap from '../../libs/swapArray';
 import StatResume from './components/StatResume';
 import DataBase from '../../data/dataBase';
@@ -174,6 +175,19 @@ class Home extends Component{
         }) 
     }
 
+    onClickMoreRecords = () => {
+
+        const { account } = this.state;
+
+        console.log(account)
+
+        const { navigation } = this.props;
+
+        navigation.navigate('AllRecords', {
+            idAccount: account.key
+        })
+    }
+
     render(){
 
         const { navigation } = this.props;
@@ -208,7 +222,7 @@ class Home extends Component{
                         data = {account.records}
                         devise = "FCFA"
                         handleClickItem = {this.onClickRecord}
-                        handleClickMore = {() => navigation.navigate('AllRecords')}
+                        handleClickMore = {this.onClickMoreRecords}
                     />
 
                     <Graph

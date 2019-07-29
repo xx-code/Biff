@@ -1,17 +1,18 @@
 import Record from "./record";
+import Moment from 'moment';
 
 export default class Account {
-    records = [];
     constructor(id, name, color){
         this.key = id;
         this.name = name;
         this.amount = 0;
         this.color = color;
         this.lengthRecords = 0;
+        this.records = [];
     }
 
     setRecord = (record) => {
-        this.records.push(new Record(record.id, record.accountId, record.amount, record.description, 
+        this.records.unshift(new Record(record.id, record.accountId, record.amount, record.description, 
             record.date, record.time, record.category, record.transfert, record.type))
     }
 
@@ -26,5 +27,7 @@ export default class Account {
                 this.lengthRecords++;
             } 
         });
+
+        this.records.sort((a,b) => new Moment(b.date, 'DDMMYYYY') -  new Moment(a.date, 'DDMMYYYY'))
     }
 }

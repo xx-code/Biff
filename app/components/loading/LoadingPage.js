@@ -7,7 +7,7 @@ import styles from './styles';
 
 /**
  * 
- * @param show boolean 
+ * @param show boolean false by default
  */
 const LoadingPage = props => {
     

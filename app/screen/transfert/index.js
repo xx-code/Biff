@@ -78,8 +78,8 @@ class AddRecord extends Component{
                     oldAmount: res.amount,
                     amount: res.amount.toString()
                 })
-                this._selectAccountFrom.onClickItem(accountFrom.key, accountFrom.name)
-                this._selectAccountTo.onClickItem(accountTo.key, accountTo.name)
+                this._selectAccountFrom.onClickItem(accountFrom, accountFrom.name)
+                this._selectAccountTo.onClickItem(accountTo, accountTo.name)
                 
             } else {
                 ToastAndroid.show("Errors transaction n'existe pas", ToastAndroid.LONG)
@@ -179,7 +179,7 @@ class AddRecord extends Component{
 
         if (accountFrom !== null) {
 
-            if ( parseInt(amount) > (accounts.find(account => account.key === accountFrom).amount + oldAmount)) {
+            if ( parseInt(amount) > (accountFrom.amount + oldAmount)) {
                 okSave = false;
                 errors.amount = 'Entrer une somme minimum ou equal au montant total du compte';
             } else {
@@ -207,7 +207,7 @@ class AddRecord extends Component{
                 accountId: accountTo,
                 type: 'income',
                 amount: parseInt(amount), 
-                description: `compte de depôt ${accountFrom.name}`, 
+                description: `compte de depôt ${accountTo.name}`, 
                 date: date, 
                 time: time, 
                 category: 8, 

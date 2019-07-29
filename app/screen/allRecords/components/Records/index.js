@@ -29,6 +29,7 @@ const Records = props => {
                     data = {data}
                     horizontal = {false}
                     renderItem = {({item, index}) => <Record
+                                                        key = {item.key}
                                                         onPress = {() => handleClickItem(item.key, item.transfert)}
                                                         category = {item.category}
                                                         description = {item.description}

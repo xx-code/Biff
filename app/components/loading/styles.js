@@ -3,8 +3,8 @@ import { TRANSPARENT } from "../../config/colors";
 
 const styles = StyleSheet.create({
     imageLoading: {
-        width: 120,
-        height: 120
+        width: 50,
+        height: 50
     },
     back: {
         alignItems: 'center', 
