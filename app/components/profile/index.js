@@ -16,7 +16,7 @@ class Profile  extends Component{
         showMenu: false
     }
 
-    componentWillMount(){
+    UNSAFE_componentWillMount(){
         this.setState({
             menus:[
                 {

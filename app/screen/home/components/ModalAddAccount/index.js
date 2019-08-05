@@ -23,7 +23,7 @@ class ModalAddAccount extends Component {
         name: ''
     }
 
-    componentWillReceiveProps(nextProps) {
+    UNSAFE_componentWillReceiveProps(nextProps) {
         if (nextProps.accountSelected !== null) {
             
             colorSelect = nextProps.accountSelected

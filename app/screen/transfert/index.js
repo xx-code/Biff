@@ -104,12 +104,14 @@ class AddRecord extends Component{
         try 
         {
             const {action, hour, minute} = await TimePickerAndroid.open({
-              hour: 14,
-              minute: 0,
+              hour: new Date(Date.now()).getHours(),
+              minute: new Date(Date.now()).getMinutes(),
               is24Hour: false, // Will display '2 PM'
             });
             if (action !== TimePickerAndroid.dismissedAction) {
-              this.setState({time: `${hour} : ${minute}` })
+                const hours =  hour < 10 ? `0${hour}` : hour;
+                const minutes = minute < 10 ? `0${minute}` : minute
+                this.setState({time: `${hours} : ${minutes}`})
             }
         } 
         catch ({code, message}) 
@@ -127,7 +129,9 @@ class AddRecord extends Component{
               date: new Date(Date.now()),
             });
             if (action !== DatePickerAndroid.dismissedAction) {
-                this.setState({date: `${day}/${month}/${year}` })
+                const resetMonth = month < 10 ? `0${month + 1}` : month + 1
+                const resetDay = day < 10 ? `0${day}` : day
+                this.setState({date: `${resetMonth}/${resetDay}/${year}`})
             }
         } 
         catch ({code, message}) {

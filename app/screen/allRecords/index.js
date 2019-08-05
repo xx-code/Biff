@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { View,
-         ScrollView,
-         Text } from 'react-native';
+         Text,
+         FlatList } from 'react-native';
+import Moment from 'moment'
 import { ChangeSelect } from '../../components/selection';
 import { LinkButton } from '../../components/button';
 import Records from './components/Records';
@@ -21,7 +22,8 @@ class AllRecords extends Component {
         db: new DataBase(),
         loadingRecords: true,
         selectArrangeTime: 0,// 0: day, 1: week, 2: month, 3: year
-        records: null
+        records: [],
+        recordsArrange: []
     }
 
     getParam = () => {
@@ -43,23 +45,136 @@ class AllRecords extends Component {
     }
 
     arrangeByDay = () => {
+        let { records } = this.state;
+        records.sort((a,b) => new Moment(b.date, 'DDMMYYYY') -  new Moment(a.date, 'DDMMYYYY'))
+        let arrangeRecords = [];
+        
+        for (let i = 0; i < records.length; i++) {
+            let recordsArr = {
+                title : records[i].date,
+                records: []
+            }
+            let stop = i;
+            for (let u = 0 ; u < records.length; u++) {
+                if (records[i].date === records[u].date) {
+                    recordsArr.records.push(records[u])
+                    stop = u;
+                } 
+            }
 
+            arrangeRecords.push(recordsArr);
+            i += stop;
+        }
+
+        this.setState({recordsArrange: arrangeRecords});
     }
     
     arrangeByWeek = () => {
+        let { records } = this.state;
+        records.sort((a,b) => new Moment(b.date, 'DDMMYYYY') -  new Moment(a.date, 'DDMMYYYY'))
+        let arrangeRecords = [];
+        let dateStart = '';
+        let dateEnd = '';
+        
+        for (let i = 0; i < records.length; i++) {
+            const dateVerify = new Moment(records[i].date).isoWeek()
+    
+            dateStart = new Moment(records[i].date)
+            dateEnd = new Moment(records[i].date)
 
+            let recordsArr = {
+                title : `${dateStart.format('DD/MM/YYYY', 'fr')} - ${dateEnd.format('DD/MM/YYYY', 'fr')}`,
+                records: []
+            }
+            
+            let stop = i;
+            for (let u = 0 ; u < records.length; u++) {
+                if ( new Moment(records[u].date).isoWeek() === dateVerify) {
+                    dateEnd = new Moment(records[u].date)
+                    if (dateEnd.isAfter(dateStart)) dateEnd = dateStart
+                    else if(dateEnd.isBefore(dateStart)) dateStart = dateEnd ;
+                         
+                    recordsArr.records.push(records[u])
+                    stop = u;
+                } 
+            }
+            
+            arrangeRecords.push(recordsArr);
+            i += stop;
+        }
+
+        this.setState({recordsArrange: arrangeRecords});
     }
 
     arrangeByMonth = () => {
+        let { records } = this.state;
+        records.sort((a,b) => new Moment(b.date, 'DDMMYYYY') -  new Moment(a.date, 'DDMMYYYY'))
+        let arrangeRecords = [];
+        
+        for (let i = 0; i < records.length; i++) {
+            const dateVerify = new Moment(records[i].date).month()
 
+            let recordsArr = {
+                title : new Moment(records[i].date).format('MMM'),
+                records: []
+            }
+            let stop = i;
+            for (let u = 0 ; u < records.length; u++) {
+                if (new Moment(records[i].date).month() === dateVerify) {
+                    recordsArr.records.push(records[u])
+                    stop = u;
+                } 
+            }
+
+            arrangeRecords.push(recordsArr);
+            i += stop;
+        }
+
+        this.setState({recordsArrange: arrangeRecords});
     }
 
     arrangeByYear = () => {
+        let { records } = this.state;
+        records.sort((a,b) => new Moment(b.date, 'DDMMYYYY') -  new Moment(a.date, 'DDMMYYYY'))
+        let arrangeRecords = [];
+        
+        for (let i = 0; i < records.length; i++) {
+            const dateVerify = new Moment(records[i].date).year()
 
+            let recordsArr = {
+                title : new Moment(records[i].date).format('YYYY'),
+                records: []
+            }
+            let stop = i;
+            for (let u = 0 ; u < records.length; u++) {
+                if (new Moment(records[i].date).year() === dateVerify) {
+                    recordsArr.records.push(records[u])
+                    stop = u;
+                } 
+            }
+
+            arrangeRecords.push(recordsArr);
+            i += stop;
+        }
+
+        this.setState({recordsArrange: arrangeRecords});
     }
 
     arrangeTime = (select) => {
-        console.log(select)
+        switch(select) {
+            case 0: 
+                this.arrangeByDay();
+                break;
+            case 1: 
+                this.arrangeByWeek();
+                break;
+            case 2: 
+                this.arrangeByMonth();
+                break;
+            case 3: 
+                this.arrangeByYear();
+                break;
+        }
     }
 
     fetchAllRecords = () => {
@@ -97,7 +212,7 @@ class AllRecords extends Component {
     render() {
 
         const { loadingRecords,
-                records } = this.state;
+                recordsArrange } = this.state;
 
         return (
             <View style = {styles.container}>
@@ -120,26 +235,18 @@ class AllRecords extends Component {
                         size = {14} 
                     />
                 </View>
-                <ScrollView showsVerticalScrollIndicator = {false}>
-                { /*
-                    records.map((val) => {
-                        return(
-                            <Records
-                                title = {val.title}
-                                key = {val.key}
-                                data = {val.records}
-                                handleClickItem = {() => {}} 
-                            />
-                        )
-                    }) */
-                }
-                    <Records
-                         title = '01/05 - 06/01'
-                         data = {records}
-                         devise = 'FCFA'
-                         handleClickItem = {this.onClickRecord}
-                    />
-                </ScrollView>
+                <FlatList
+                    data = {recordsArrange}
+                    horizontal = {false}
+                    renderItem = {({item, index}) => <Records
+                                                        title = {item.title}
+                                                        key = {`${index}`}
+                                                        devise = "FCFA"
+                                                        data = {item.records}
+                                                        handleClickItem = {this.onClickRecord} 
+                                                     />
+                                 }
+                />
                 <LoadingPage
                      show = {loadingRecords}
                 />
